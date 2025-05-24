@@ -1,0 +1,38 @@
+/* src/pages/Home/HomePage.module.css */
+.homeContainer {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 30px auto;
+}
+
+.homeContainer h1 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 2.5em;
+}
+
+.description {
+  font-size: 1.2em;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.linkButton {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.linkButton:hover {
+  background-color: #218838;
+}
