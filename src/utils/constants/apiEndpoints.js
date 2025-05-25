@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   },
   USERS: {
     LIST: '/users',
-    DETAIL: '/users/:id'
+    DETAIL: '/users/:id',
+    CHANGE_PASSWORD: '/users/change-password'
   }
 };
