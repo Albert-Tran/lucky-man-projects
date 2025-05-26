@@ -2,42 +2,36 @@ import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth/AuthContext.jsx';
 import styles from './DefaultLayout.module.css';
+import Header from '../Header/Header.jsx';
+import Footer from '../Footer/Footer.jsx';
 
 const DefaultLayout = () => {
   const { isAuthenticated, user, logout } = useAuth();
-
+  const navLinks = [
+    {
+      label: "About Us",
+      requiresAuth: false,
+      path: "/about"
+    },
+    {
+      label: "Hồ sơ",
+      requiresAuth: true,
+      path: "/user/profile"
+    },
+    {
+      label: "Đổi MK",
+      requiresAuth: true,
+      path: "/user/change-password"
+    }
+  ];
   return (
     <div className={styles.layoutContainer}>
-      <header className={styles.header}>
-        <h1>Tên ứng dụng</h1>
-        <nav className={styles.nav}>
-          <Link to="/" className={styles.navLink}>Trang Chủ</Link>
-          <Link to="/about" className={styles.navLink}>Giới thiệu</Link>
-          <Link to="/user/profile" className={styles.navLink}>Hồ sơ</Link>
-        </nav>
-        <div className={styles.authSection}>
-          {isAuthenticated ? (
-            <>
-              <span className={styles.welcomeText}>Xin chào, {user?.username}!</span>
-              <button onClick={logout} className={styles.logoutButton}>
-                Đăng xuất
-              </button>
-            </>
-          ) : (
-            <Link to="/login" className={styles.loginButton}>
-              Đăng nhập
-            </Link>
-          )}
-        </div>
-      </header>
-
+      <Header navLinks={navLinks} appName="Lucky Man" />
       <main className={styles.mainContent}>
         <Outlet />
       </main>
 
-      <footer className={styles.footer}>
-        <p>&copy; 2025 Dự án Base. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 };

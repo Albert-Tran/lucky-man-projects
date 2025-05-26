@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../../contexts/auth/AuthContext.jsx';
+import { useAuth } from '../../../contexts/auth/AuthContext.jsx';
 import styles from './ProfilePage.module.css';
 
 const ProfilePage = () => {

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useCallback, useMemo } fro
 import { useNavigate } from 'react-router-dom';
 import useLocalStorage from '../../hooks/useLocalStorage.js';
 import authApi from '../../services/api/authApi.js';
-import { registerLogoutCallback } from '../../utils/authUtils.js';
+import { registerLogoutCallback } from '../../utils/auth/authUtils.js';
 
 const AuthContext = createContext(undefined);
 
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         id: data.user.id,
         username: data.user.username,
         email: data.user.email,
-        accessToken: data.token, // Đổi tên từ 'token' thành 'accessToken' cho rõ ràng
+        accessToken: data.accessToken, // Đổi tên từ 'token' thành 'accessToken' cho rõ ràng
         refreshToken: data.refreshToken, // Lưu refresh token
       };
       setUser(loggedInUser);

@@ -1,0 +1,101 @@
+/* src/components/Layout/Header.module.css */
+.header {
+  background-color: #333;
+  color: white;
+  padding: 15px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  color: white;
+  text-decoration: none;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.nav {}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 25px; /* Khoảng cách giữa các mục nav */
+}
+
+.navItem {}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1em;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #007bff; /* Màu xanh khi hover */
+}
+
+.loginButton {
+  background-color: #007bff;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: #0056b3;
+  color: white; /* Đảm bảo màu chữ vẫn là trắng */
+}
+
+.logoutButton {
+  background: none;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.logoutButton:hover {
+  background-color: #dc3545; /* Màu đỏ khi hover */
+  border-color: #dc3545;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navList {
+    gap: 15px;
+  }
+  .logo {
+    font-size: 1.5em;
+  }
+  .navLink, .logoutButton, .loginButton {
+    font-size: 0.95em;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  .navList {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
