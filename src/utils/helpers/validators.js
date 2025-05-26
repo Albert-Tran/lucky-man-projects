@@ -92,3 +92,14 @@ export const validateMin = (value, minValue, fieldName = 'Trường này') => {
   }
   return null;
 };
+
+export const composeValidators = (...validators) => (value, fieldName, allValues = {}) => {
+  for (let validator of validators) {
+    // Truyền thêm allValues để validator có thể truy cập các trường khác (ví dụ: confirmPassword)
+    const error = validator(value, fieldName, allValues);
+    if (error) {
+      return error;
+    }
+  }
+  return null;
+};

@@ -13,7 +13,7 @@ const DefaultLayout = () => {
         <nav className={styles.nav}>
           <Link to="/" className={styles.navLink}>Trang Chủ</Link>
           <Link to="/about" className={styles.navLink}>Giới thiệu</Link>
-          <Link to="/profile" className={styles.navLink}>Hồ sơ</Link>
+          <Link to="/user/profile" className={styles.navLink}>Hồ sơ</Link>
         </nav>
         <div className={styles.authSection}>
           {isAuthenticated ? (

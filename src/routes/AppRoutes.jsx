@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/Home/HomePage.jsx';
 import LoginPage from '../pages/Login/LoginPage.jsx';
-import ProfilePage from '../pages/Profile/ProfilePage.jsx';
+import ProfilePage from '../pages/User/Profile/ProfilePage.jsx';
 import NotFoundPage from '../pages/NotFound/NotFoundPage.jsx';
+import ChangePasswordPage from '../pages/User/ChangePassword/ChangePasswordPage.jsx';
 import DefaultLayout from '../components/Layout/DefaultLayout.jsx';
 import { AuthProvider } from '../contexts/auth/AuthContext.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
@@ -18,7 +19,10 @@ const AppRoutes = () => {
 
             {/* Các route được bảo vệ bởi PrivateRoute */}
             <Route element={<PrivateRoute />}>
-              <Route path="profile" element={<ProfilePage />} />
+              {/* User router */}
+              <Route path="user/profile" selement={<ProfilePage />} />
+              <Route path="user/change-password" element={<ChangePasswordPage />} />
+              {/* User router */}
             </Route>
           </Route>
 
