@@ -1,19 +1,17 @@
-// src/services/http/httpClient.js
 import axios from 'axios';
 import { triggerLogout } from '../../utils/auth/authUtils.js';
 import authApi from '../api/authApi.js'; // Import authApi để gọi refreshToken
-
-const API_BASE_URL = 'http://localhost:3000/api';
+import CONFIG from '../../utils/config/config.js';
 
 const httpClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: CONFIG[import.meta.env.VITE_MODE].API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-let isRefreshing = false; // Biến cờ để tránh nhiều request làm mới token cùng lúc
-let failedQueue = []; // Hàng đợi các request bị lỗi 401 khi đang làm mới token
+let isRefreshing = false;
+let failedQueue = [];
 
 // Hàm xử lý hàng đợi các request bị lỗi
 const processQueue = (error, token = null) => {

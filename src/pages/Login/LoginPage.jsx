@@ -12,7 +12,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   if (isAuthenticated) {
-    navigate('/');
+    // navigate('/');
     return null;
   }
 

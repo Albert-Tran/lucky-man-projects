@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';1
 import { useAuth } from '../../contexts/auth/AuthContext.jsx';
 import styles from './Header.module.css';
+import ConnectWalletButton from '../Common/ConnectWalletButton/ConnectWalletButton.jsx';
 
 const Header = ({ appName, navLinks }) => {
   const { isAuthenticated, logout } = useAuth();
@@ -23,9 +24,14 @@ const Header = ({ appName, navLinks }) => {
                     ) : null
                 ))}
                 {isAuthenticated ? (
-                    <li className={styles.navItem}>
+                    <>
+                      <li className={styles.navItem}>
                         <button onClick={logout} className={styles.logoutButton}>Đăng xuất</button>
-                    </li>
+                      </li>
+                      <li className={`${styles.navItem} ${styles.connectWalletNavItem}`}>
+                        <ConnectWalletButton />
+                      </li>
+                    </>
                 ) : (
                 <li className={styles.navItem}>
                     <Link to="/login" className={`${styles.navLink} ${styles.loginButton}`}>Đăng nhập</Link>
