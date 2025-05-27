@@ -1,0 +1,58 @@
+/* src/components/Common/ConnectWalletButton.module.css */
+.connectWalletContainer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* Cho phép các nút xuống dòng nếu không đủ chỗ */
+  justify-content: center; /* Căn giữa các nút */
+}
+
+.connectButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 120px;
+}
+
+.connectButton:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.connectButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.walletInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #444;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 0.95em;
+}
+
+.walletInfo p {
+  margin: 0;
+}
+
+.disconnectButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.disconnectButton:hover {
+  background-color: #c82333;
+}
