@@ -11,5 +11,11 @@ export const API_ENDPOINTS = {
     LIST: '/users',
     DETAIL: '/users/:id',
     CHANGE_PASSWORD: '/users/change-password'
+  },
+  TOKEN: {
+    CREATE: '/tokens/create',
+    DELETE: '/tokens/delete',
+    LIST: '/tokens',
+    DETAIL: '/tokens/:address'
   }
 };
