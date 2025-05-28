@@ -22,6 +22,11 @@ const DefaultLayout = () => {
       label: "Đổi MK",
       requiresAuth: true,
       path: "/user/change-password"
+    },
+    {
+      label: "Nhóm ví",
+      requiresAuth: true,
+      path: "/wallet/wallet-groups"
     }
   ];
   return (

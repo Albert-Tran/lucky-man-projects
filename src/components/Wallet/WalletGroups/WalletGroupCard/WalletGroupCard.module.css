@@ -1,0 +1,101 @@
+/* src/components/WalletGroups/WalletGroupCard.module.css */
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.selected {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.checkboxContainer {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10; /* Đảm bảo checkbox nằm trên nội dung khác */
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.cardContent {
+  /* padding: 20px; */
+  padding-top: 40px; /* Tạo không gian cho checkbox */
+  flex-grow: 1;
+  text-decoration: none; /* Bỏ gạch chân cho Link */
+  color: inherit; /* Kế thừa màu chữ */
+  display: flex;
+  flex-direction: column;
+}
+
+.groupName {
+  font-size: 1.5em;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.groupDescription {
+  font-size: 0.95em;
+  color: #666;
+  flex-grow: 1; /* Cho phép mô tả chiếm không gian */
+  margin-bottom: 15px;
+}
+
+.groupStats {
+  font-size: 0.9em;
+  color: #777;
+  margin-top: 10px;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: flex-end; /* Nút hành động ở bên phải */
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+.editButton, .deleteButton {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease;
+}
+
+.editButton {
+  background-color: #007bff;
+  color: white;
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}

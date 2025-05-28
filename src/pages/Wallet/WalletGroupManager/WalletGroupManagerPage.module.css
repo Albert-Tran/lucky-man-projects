@@ -1,0 +1,130 @@
+/* src/pages/WalletGroups/WalletGroupListPage.module.css */
+.layoutContainer {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.topActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap; /* Đảm bảo responsive */
+  gap: 15px; /* Khoảng cách giữa các phần tử */
+}
+
+.addButton {
+  background-color: #28a745; /* Green */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addButton:hover {
+  background-color: #218838;
+}
+
+.massActions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px 20px;
+}
+
+.masterCheckbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.masterCheckboxLabel {
+  font-weight: 600;
+  color: #555;
+}
+
+.deleteSelectedButton {
+  background-color: #dc3545; /* Red */
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.deleteSelectedButton:hover {
+  background-color: #c82333;
+}
+
+.noGroupsMessage {
+  text-align: center;
+  color: #777;
+  font-size: 1.2em;
+  padding: 50px 0;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.loadingContainer, .errorContainer {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2em;
+  color: #555;
+}
+
+.errorContainer {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 2em;
+  }
+  .topActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .massActions {
+    width: 100%;
+    justify-content: center;
+  }
+  .addButton, .deleteSelectedButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 15px;
+  }
+  .gridContainer {
+    grid-template-columns: 1fr; /* Single column on small screens */
+  }
+}

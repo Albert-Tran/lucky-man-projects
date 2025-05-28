@@ -27,7 +27,7 @@ const ConnectWalletButton = () => {
           key={connector.uid}
           onClick={() => connect({ connector })}
           className={styles.connectButton}
-          disabled={!connector.ready || connector.id === pendingConnector?.id}
+          // disabled={!connector.ready || connector.id === pendingConnector?.id}
         >
           {connector.name}
           {connector.id === pendingConnector?.id && ' (đang kết nối...)'}
