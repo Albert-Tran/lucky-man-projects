@@ -33,7 +33,7 @@ const LoginPage = () => {
     if (error) {
       newErrors.password = error;
     } else {
-      error = validateMinLength(password, 6, 'Mật khẩu');
+      error = validateMinLength(password, 1, 'Mật khẩu');
       if (error) newErrors.password = error;
     }
 

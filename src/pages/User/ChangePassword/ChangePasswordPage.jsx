@@ -28,7 +28,7 @@ const ChangePasswordPage = () => {
   // Validator cho mật khẩu mới
   const validateNewPassword = composeValidators(
     (value) => validateRequired(value, 'Mật khẩu mới'),
-    (value) => validateMinLength(value, 8, 'Mật khẩu mới'), // Ví dụ min length 8
+    (value) => validateMinLength(value, 1, 'Mật khẩu mới'), // Ví dụ min length 8
   );
 
   // Validator cho xác nhận mật khẩu mới

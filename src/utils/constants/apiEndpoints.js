@@ -1,16 +1,16 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://3.76.45.112:5000';
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: '/auth/login',
+    LOGIN: '/auth/login/email',
     LOGOUT: '/auth/logout',
-    REFRESH: '/auth/refresh',
+    REFRESH: '/auth/refresh-token',
     ME: '/auth/me'
   },
   USERS: {
     LIST: '/users',
     DETAIL: '/users/:id',
-    CHANGE_PASSWORD: '/users/change-password'
+    CHANGE_PASSWORD: '/api/auth/change-password'
   },
   TOKEN: {
     CREATE: '/tokens/create',
@@ -19,6 +19,6 @@ export const API_ENDPOINTS = {
     DETAIL: '/tokens/:address'
   },
   WALLET: {
-    WALLET_GROUP_MANAGER: 'wallet/group'
+    WALLET_GROUP_MANAGER: '/groups'
   }
 };

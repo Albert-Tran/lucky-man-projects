@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }) => {
       const loggedInUser = {
         id: data.user.id,
         username: data.user.username,
-        email: data.user.email,
         accessToken: data.accessToken, // Đổi tên từ 'token' thành 'accessToken' cho rõ ràng
         refreshToken: data.refreshToken, // Lưu refresh token
       };
