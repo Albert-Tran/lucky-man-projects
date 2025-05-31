@@ -27,7 +27,7 @@ const WalletGroupManagerPage = () => {
         try {
             // Truyền currentPage và itemsPerPage vào lời gọi API
             const data = await walletApi.getWalletGroups({limit: itemsPerPage, page: currentPage});
-            console.log("data", data)
+
             setWalletGroups(data.groups || []); // Cập nhật danh sách nhóm ví
             setTotalItems(data.total || 0); // Cập nhật tổng số mục
             const calculatedTotalPages = Math.ceil((data.total || 0) / itemsPerPage);
@@ -80,11 +80,11 @@ const WalletGroupManagerPage = () => {
     }, [selectedGroupIds, walletGroups]);
 
     const handleAddGroup = () => {
-        navigate('wallet/wallet-groups/new');
+        navigate('new');
     };
 
     const handleEditGroup = (groupId) => {
-        navigate(`wallet/wallet-groups/${groupId}/edit`);
+        navigate(`${groupId}/edit`);
     };
 
     const handleSelectGroup = (groupId) => {
@@ -105,8 +105,8 @@ const WalletGroupManagerPage = () => {
         setError(null);
         try {
             await walletApi.deleteWalletGroups([groupId]);
+            await fetchWalletGroups();
             alert('Nhóm ví đã được xóa thành công!');
-            fetchWalletGroups(); // Tải lại danh sách
         } catch (err) {
             setError(err.message || 'Không thể xóa nhóm ví.');
             console.error('Failed to delete group:', err);

@@ -71,7 +71,7 @@ const ChangePasswordPage = () => {
 
     if (isValid) {
       try {
-        const response = await userApi.changePassword(oldPassword, newPassword, confirmNewPassword);
+        const response = await userApi.changePassword(oldPassword, newPassword);
         setSuccessMessage(response.message || 'Mật khẩu đã được thay đổi thành công!');
         // Clear form fields
         setOldPassword('');

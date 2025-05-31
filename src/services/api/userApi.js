@@ -7,11 +7,10 @@ const userApi = {
    * Gọi API để thay đổi mật khẩu người dùng.
    * @param {string} oldPassword - Mật khẩu cũ.
    * @param {string} newPassword - Mật khẩu mới.
-   * @param {string} confirmNewPassword - Xác nhận mật khẩu mới (có thể gửi lên backend hoặc chỉ validate ở frontend).
    * @returns {Promise<Object>} Dữ liệu phản hồi từ API.
    * @throws {Error} Ném lỗi nếu đổi mật khẩu không thành công.
    */
-  changePassword: async (oldPassword, newPassword, confirmNewPassword) => {
+  changePassword: async (oldPassword, newPassword) => {
     try {
       const response = await httpClient.put(API_ENDPOINTS.USERS.CHANGE_PASSWORD, {
         oldPassword,

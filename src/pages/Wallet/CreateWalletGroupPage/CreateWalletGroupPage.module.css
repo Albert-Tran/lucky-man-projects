@@ -1,0 +1,25 @@
+.pageContainer {
+  padding: 30px;
+  max-width: 1200px; /* Vẫn giữ giới hạn chiều rộng tổng thể */
+  margin: 0 auto;
+  text-align: center; /* Căn giữa tiêu đề và form */
+}
+
+.pageTitle {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Kế thừa style của LoadingSpinner và Error message */
+.loadingContainer, .errorContainer {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2em;
+  color: #555;
+}
+
+.errorContainer {
+  color: #dc3545;
+  font-weight: bold;
+}

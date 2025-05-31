@@ -4,6 +4,8 @@ import LoginPage from '../pages/Login/LoginPage.jsx';
 import ProfilePage from '../pages/User/Profile/ProfilePage.jsx';
 import ChangePasswordPage from '../pages/User/ChangePassword/ChangePasswordPage.jsx';
 import WalletGroupManagerPage from '../pages/Wallet/WalletGroupManager/WalletGroupManagerPage.jsx';
+import CreateWalletGroupPage from '../pages/Wallet/CreateWalletGroupPage/CreateWalletGroupPage.jsx';
+import EditWalletGroupPage from '../pages/Wallet/EditWalletGroupPage/EditWalletGroupPage.jsx';
 import NotFoundPage from '../pages/NotFound/NotFoundPage.jsx';
 import DefaultLayout from '../components/Layout/DefaultLayout.jsx';
 import { AuthProvider } from '../contexts/auth/AuthContext.jsx';
@@ -25,7 +27,9 @@ const AppRoutes = () => {
               {/* User router */}
               {/* Wallet router */}
               <Route path="wallet/wallet-groups" element={<WalletGroupManagerPage />} />
-              {/* <Route path="wallet/wallet-groups/new" element={<CreateWalletGroupPage />} />
+              <Route path="wallet/wallet-groups/new" element={<CreateWalletGroupPage />} />
+              <Route path="wallet/wallet-groups/:id/edit" element={<EditWalletGroupPage />} />
+              {/* 
               <Route path="wallet/wallet-groups/:groupId" element={<WalletGroupDetailsPage />} />
               <Route path="wallet/wallet-groups/:groupId/edit" element={<EditWalletGroupPage />} /> */}
               {/* Wallet router */}
