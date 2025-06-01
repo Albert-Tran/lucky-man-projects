@@ -39,7 +39,7 @@ const EditWalletGroupPage = () => {
     try {
       await walletApi.updateWalletGroup(id, formData);
       alert('Thông tin nhóm ví đã được cập nhật thành công!');
-      navigate('/wallet/wallet-groups'); // Chuyển hướng về trang danh sách
+      navigate('/wallet/wallet-group'); // Chuyển hướng về trang danh sách
     } catch (err) {
       setError(err.message || 'Không thể cập nhật nhóm ví. Vui lòng thử lại.');
       console.error('Error updating wallet group:', err);

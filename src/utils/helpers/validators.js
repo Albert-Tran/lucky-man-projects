@@ -93,6 +93,13 @@ export const validateMin = (value, minValue, fieldName = 'Trường này') => {
   return null;
 };
 
+export const validateContractAddress = (value, fieldName = 'Trường này') => {
+  if (!/^0x[a-fA-F0-9]{40}$/i.test(value)) {
+    return `${fieldName} không hợp lệ (phải bắt đầu bằng 0x và 42 ký tự hex).`
+  }
+  return null;
+};
+
 export const composeValidators = (...validators) => (value, fieldName, allValues = {}) => {
   for (let validator of validators) {
     // Truyền thêm allValues để validator có thể truy cập các trường khác (ví dụ: confirmPassword)

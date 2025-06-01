@@ -17,7 +17,7 @@ const CreateWalletGroupPage = () => {
         try {
             await walletApi.createWalletGroup(formData);
             alert('Nhóm ví đã được tạo thành công!');
-            navigate('/wallet/wallet-groups');
+            navigate('/wallet/wallet-group');
         } catch (err) {
             setError(err.message || 'Không thể tạo nhóm ví. Vui lòng thử lại.');
             console.error('Error creating wallet group:', err);

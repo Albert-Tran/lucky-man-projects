@@ -24,9 +24,14 @@ const DefaultLayout = () => {
       path: "/user/change-password"
     },
     {
+      label: "Tao Token",
+      requiresAuth: true,
+      path: "/token/new"
+    },
+    {
       label: "Nhóm ví",
       requiresAuth: true,
-      path: "/wallet/wallet-groups"
+      path: "/wallet/wallet-group"
     }
   ];
   return (

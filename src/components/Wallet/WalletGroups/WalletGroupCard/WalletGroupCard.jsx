@@ -17,7 +17,7 @@ const WalletGroupCard = ({ group, isSelected, onSelect, onEdit, onDelete }) => {
           className={styles.checkbox}
         />
       </div>
-      <Link to={`wallet/wallet-groups/${group.id}`} className={styles.cardContent}>
+      <Link to={`/wallet/wallet-group/${group.id}`} className={styles.cardContent}>
         <h3 className={styles.groupName}>{group.name}</h3>
         <p className={styles.groupDescription}>{group.description || 'Không có mô tả.'}</p>
         <div className={styles.groupStats}>
