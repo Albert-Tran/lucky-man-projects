@@ -18,11 +18,6 @@ const CreateTokenPage = () => {
   const [name, setName] = useState('');
   const [symbol, setSymbol] = useState('');
   const [decimals, setDecimals] = useState('');
-  const [logoUrl, setLogoUrl] = useState('');
-  const [website, setWebsite] = useState('');
-  const [description, setDescription] = useState('');
-  const [coingeckoId, setCoingeckoId] = useState('');
-
   const [isFetchingOnChain, setIsFetchingOnChain] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [formErrors, setFormErrors] = useState({});
@@ -31,7 +26,7 @@ const CreateTokenPage = () => {
 
   const validateTokenAddress = composeValidators(
     (value) => validateRequired(value, 'Xác nhận mật khẩu mới'),
-    (value) => validateTokenAddress(value, 'Dia chi Token')
+    (value) => validateContractAddress(value, 'Dia chi Token')
   );
 
   // Hàm validate form (giữ nguyên hoặc điều chỉnh theo nhu cầu)
@@ -44,14 +39,15 @@ const CreateTokenPage = () => {
 
   useEffect(() => {
     validateForm();
-  }, [address, chain, name, symbol, decimals]);
+  }, [address, chain]);
 
   // Hàm fetch thông tin token on-chain (thay đổi tại đây)
   const handleFetchOnChainInfo = useCallback(async () => {
     setOnChainError(null);
     setFormErrors({});
     const tempErrors = {};
-
+    const addressError = validateTokenAddress(address);
+    if (addressError) tempErrors.address = addressError;
     if (Object.keys(tempErrors).length > 0) {
       setFormErrors(tempErrors);
       return;
@@ -59,7 +55,6 @@ const CreateTokenPage = () => {
 
     setIsFetchingOnChain(true);
     try {
-      // GỌI HÀM FETCH ON-CHAIN TRỰC TIẾP TỪ FRONTEND
       const data = await fetchTokenOnChainInfo(address, chain);
       setName(data.name || '');
       setSymbol(data.symbol || '');
@@ -95,10 +90,6 @@ const CreateTokenPage = () => {
         name,
         symbol,
         decimals: parsedDecimals,
-        logoUrl: logoUrl || null,
-        website: website || null,
-        description: description || null,
-        coingeckoId: coingeckoId || null,
       };
       await tokenApi.createToken(tokenData); // Gửi dữ liệu token đã hoàn chỉnh lên backend
       alert('Token đã được tạo thành công!');
@@ -140,6 +131,7 @@ const CreateTokenPage = () => {
             disabled={isFetchingOnChain || isLoadingSubmit}
             required
           >
+            <option key="" value="">Chọn chain</option>
             {SUPPORTED_CHAINS.map(c => (
               <option key={c.value} value={c.value}>{c.label}</option>
             ))}
@@ -154,7 +146,7 @@ const CreateTokenPage = () => {
           disabled={isFetchingOnChain || isLoadingSubmit || !address || !chain || formErrors.address || formErrors.chain}
           style={{ marginBottom: '20px', backgroundColor: '#6c757d' }}
         >
-          {isFetchingOnChain ? <LoadingSpinner /> : 'Fetch On-chain Info'}
+          {isFetchingOnChain ? <LoadingSpinner /> : 'Lấy thông tin token'}
         </button>
         {onChainError && <p className={styles.serverError}>{onChainError}</p>}
 
@@ -200,57 +192,6 @@ const CreateTokenPage = () => {
             required
           />
           {formErrors.decimals && <p className={styles.errorMessage}>{formErrors.decimals}</p>}
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="logoUrl" className={styles.label}>URL Logo:</label>
-          <input
-            type="text"
-            id="logoUrl"
-            className={styles.input}
-            value={logoUrl}
-            onChange={(e) => setLogoUrl(e.target.value)}
-            placeholder="https://..."
-            disabled={isLoadingSubmit}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="website" className={styles.label}>Website:</label>
-          <input
-            type="text"
-            id="website"
-            className={styles.input}
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
-            placeholder="https://..."
-            disabled={isLoadingSubmit}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="description" className={styles.label}>Mô tả:</label>
-          <textarea
-            id="description"
-            className={styles.textarea}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows="3"
-            disabled={isLoadingSubmit}
-          ></textarea>
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="coingeckoId" className={styles.label}>Coingecko ID:</label>
-          <input
-            type="text"
-            id="coingeckoId"
-            className={styles.input}
-            value={coingeckoId}
-            onChange={(e) => setCoingeckoId(e.target.value)}
-            placeholder="bitcoin, ethereum..."
-            disabled={isLoadingSubmit}
-          />
         </div>
 
         {submitError && <p className={styles.serverError}>{submitError}</p>}

@@ -4,11 +4,11 @@ const CONFIG = {
         WAGMI_WALLETCONNECT_PROJECT_ID: "c6ecf3c63747ee4ade44fc5a4fb62151",
         ITEMS_PER_PAGE_OPTIONS: [6, 9, 12],
         SUPPORTED_CHAINS: [
-            { value: 'ethereum', label: 'Ethereum' },
-            { value: 'base', label: 'Base' }
+            { value: 1, label: 'Ethereum' },
+            { value: 8453, label: 'Base' }
         ],
         RPC_URLS: {
-            ethereum: 'https://rpc.ankr.com/eth',
+            ethereum: 'https://1.rpc.thirdweb.com',
             base: 'https://mainnet.base.org'
         }
     },
@@ -21,7 +21,7 @@ const CONFIG = {
             { value: 'base', label: 'Base' }
         ],
         RPC_URLS: {
-            ethereum: 'https://rpc.ankr.com/eth',
+            ethereum: 'https://1.rpc.thirdweb.com',
             base: 'https://mainnet.base.org'
         }
     }
