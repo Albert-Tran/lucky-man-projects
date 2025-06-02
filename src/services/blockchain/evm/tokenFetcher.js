@@ -7,42 +7,34 @@ import CONFIG from '../../../utils/config/config.js';
 // bạn nên dùng Infura/Alchemy/QuickNode với API key của riêng bạn,
 // hoặc sử dụng provider từ ví người dùng (Metamask, WalletConnect).
 const RPC_URLS = CONFIG[import.meta.env.VITE_MODE].RPC_URLS; 
+const BLOCKCHAIN_EXPLORER_URLS = CONFIG[import.meta.env.VITE_MODE].BLOCKCHAIN_EXPLORER_URLS;
+const SUPPORTED_CHAINS = CONFIG[import.meta.env.VITE_MODE].SUPPORTED_CHAINS
 
 /**
  * Lấy thông tin token (name, symbol, decimals) trực tiếp từ blockchain.
  * @param {string} address - Địa chỉ contract của token (ví dụ: '0x...').
- * @param {string} chainName - Tên chuỗi blockchain (ví dụ: 'ethereum', 'base').
+ * @param {string} chainId - ID chuỗi blockchain (ví dụ: 'ethereum': 1, 'base': 8453).
  * @returns {Promise<{name: string, symbol: string, decimals: number}>} Thông tin token.
  * @throws {Error} Nếu có lỗi khi fetch hoặc địa chỉ/chain không hợp lệ.
  */
-export const fetchTokenOnChainInfo = async (address, chainName) => {
-  const rpcUrl = RPC_URLS[chainName];
+export const fetchTokenOnChainInfo = async (address, chainId) => {
+  const rpcUrl = RPC_URLS[chainId];
 
   if (!rpcUrl) {
-    throw new Error(`Chain "${chainName}" không được hỗ trợ hoặc cấu hình RPC.`);
+    throw new Error(`Chain "${chainId}" không được hỗ trợ hoặc cấu hình RPC.`);
   }
   if (!ethers.isAddress(address)) { // Sử dụng ethers.isAddress để kiểm tra địa chỉ hợp lệ
     throw new Error(`Địa chỉ contract "${address}" không hợp lệ.`);
   }
 
   try {
-    // Tạo một JsonRpcProvider để kết nối với blockchain
     const provider = new ethers.JsonRpcProvider(rpcUrl);
-
-    // Tạo một Contract instance
-    // provider.getNetwork() sẽ trả về Network object, từ đó lấy chainId
-    // Đây là cách an toàn hơn để đảm bảo provider hoạt động với chainName
     const network = await provider.getNetwork();
-    if (network.name !== chainName) {
-        // Có thể thêm kiểm tra chainId nếu chainName không khớp chính xác với network.name
-        // Ví dụ: network.chainId !== desiredChainId
-        console.warn(`Provider cho ${chainName} đang kết nối tới mạng ${network.name}.`);
+    if (network.name !== chainId) {
+        console.warn(`Provider cho ${chainId} đang kết nối tới mạng ${network.name}.`);
     }
 
     const contract = new ethers.Contract(address, ERC20_ABI, provider);
-
-    // Gọi các hàm view (read-only) của contract
-    // Sử dụng Promise.all để gọi đồng thời, tăng hiệu suất
     const [name, symbol, decimals] = await Promise.all([
       contract.name(),
       contract.symbol(),
@@ -65,3 +57,12 @@ export const fetchTokenOnChainInfo = async (address, chainName) => {
     throw new Error(userMessage);
   }
 };
+
+export const getTokenAddressUrls = (chainId, address) => {
+  return (BLOCKCHAIN_EXPLORER_URLS[chainId]) ? `${BLOCKCHAIN_EXPLORER_URLS[chainId]}/token/${address}` : '#';
+}
+
+export const getChainNameById = (chainId) => {
+  const chain = SUPPORTED_CHAINS.find(chain => chain.value === chainId);
+  return chain ? chain.label : undefined;
+}

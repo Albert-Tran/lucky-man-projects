@@ -9,6 +9,10 @@ import styles from './CreateTokenPage.module.css';
 import CONFIG from '../../../utils/config/config.js';
 
 const SUPPORTED_CHAINS = CONFIG[import.meta.env.VITE_MODE].SUPPORTED_CHAINS;
+const SELECTED_CHAINS = [
+  { value: '', label: 'Chon Chains' },
+  ...SUPPORTED_CHAINS
+];
 
 const CreateTokenPage = () => {
   const navigate = useNavigate();
@@ -91,7 +95,7 @@ const CreateTokenPage = () => {
       
       await tokenApi.createToken(tokenData); // Gửi dữ liệu token đã hoàn chỉnh lên backend
       alert('Token đã được tạo thành công!');
-      navigate('/tokens'); // Chuyển hướng về trang danh sách token
+      navigate('/token'); // Chuyển hướng về trang danh sách token
     } catch (err) {
       setSubmitError(err.message || 'Không thể tạo token. Vui lòng thử lại.');
       console.error('Error creating token:', err);
@@ -129,8 +133,7 @@ const CreateTokenPage = () => {
             disabled={isFetchingOnChain || isLoadingSubmit}
             required
           >
-            <option key="" value="">Chọn chain</option>
-            {SUPPORTED_CHAINS.map(c => (
+            {SELECTED_CHAINS.map(c => (
               <option key={c.value} value={c.value}>{c.label}</option>
             ))}
           </select>

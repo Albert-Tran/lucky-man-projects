@@ -10,6 +10,10 @@ const CONFIG = {
         RPC_URLS: {
             1: 'https://1.rpc.thirdweb.com',
             8453: 'https://mainnet.base.org'
+        },
+        BLOCKCHAIN_EXPLORER_URLS: {
+            1: 'https://etherscan.io/',
+            8453: 'https://basescan.org/'
         }
     },
     DEVELOPER: {
@@ -23,6 +27,10 @@ const CONFIG = {
         RPC_URLS: {
             1: 'https://1.rpc.thirdweb.com',
             8453: 'https://mainnet.base.org'
+        },
+        BLOCKCHAIN_EXPLORER_URLS: {
+            1: 'https://etherscan.io/',
+            8453: 'https://basescan.org/'
         }
     }
 };

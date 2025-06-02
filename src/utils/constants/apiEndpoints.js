@@ -16,6 +16,10 @@ export const API_ENDPOINTS = {
     CREATE: '/tokens',
     DELETE: '/tokens/delete',
     LIST: '/tokens',
+    SEARCH: 'tokens/search',
+    GET_BY_NAME: '/tokens/name/:name',
+    GET_BY_ADDRESS: '/tokens/address/:address',
+    GET_BY_CHAIN: '/tokens/chain/:chainId',
     DETAIL: '/tokens/:address'
   },
   WALLET: {

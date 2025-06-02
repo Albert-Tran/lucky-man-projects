@@ -118,8 +118,8 @@ const WalletGroupManagerPage = () => {
 
     const handleMassDelete = async () => {
         if (selectedGroupIds.size === 0) {
-        alert('Vui lòng chọn ít nhất một nhóm để xóa.');
-        return;
+            alert('Vui lòng chọn ít nhất một nhóm để xóa.');
+            return;
         }
 
         if (window.confirm(`Bạn có chắc chắn muốn xóa ${selectedGroupIds.size} nhóm ví đã chọn không?`)) {

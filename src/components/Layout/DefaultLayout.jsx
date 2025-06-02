@@ -24,9 +24,9 @@ const DefaultLayout = () => {
       path: "/user/change-password"
     },
     {
-      label: "Tao Token",
+      label: "Token",
       requiresAuth: true,
-      path: "/token/new"
+      path: "/token"
     },
     {
       label: "Nhóm ví",

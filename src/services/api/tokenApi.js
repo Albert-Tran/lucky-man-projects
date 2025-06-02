@@ -31,12 +31,29 @@ const tokenApi = {
         }
     },
 
+    searchTokens: async (filters) => {
+        try {
+            const response = await httpClient.get(API_ENDPOINTS.TOKEN.SEARCH, {
+                params: filters // Truyền tham số phân trang qua query params
+            } );
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Lay thong tin danh sach token khong thanh cong.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Lay thong tin danh sach token khong thanh cong.';
+            throw new Error(errorMessage);
+        }
+    },
 
     getTokens: async (filters) => {
         try {
-            const response = await httpClient.post(API_ENDPOINTS.TOKEN.LIST, {filters});
-            if (response.data.success) {
-                return response.data;
+            const response = await httpClient.get(API_ENDPOINTS.TOKEN.LIST, {
+                params: filters
+            });
+            if (response?.data?.success) {
+                return response?.data?.data;
             } else {
                 throw new Error(response.data.message || 'Lay thong tin danh sach token khong thanh cong.');
             }

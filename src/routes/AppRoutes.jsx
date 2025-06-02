@@ -9,6 +9,7 @@ import CreateWalletGroupPage from '../pages/Wallet/CreateWalletGroup/CreateWalle
 import EditWalletGroupPage from '../pages/Wallet/EditWalletGroup/EditWalletGroupPage.jsx';
 
 import CreateTokenPage from '../pages/Token/CreateToken/CreateTokenPage.jsx';
+import TokenManagerPage from '../pages/Token/TokenManager/TokenManagerPage.jsx';
 
 import NotFoundPage from '../pages/NotFound/NotFoundPage.jsx';
 import DefaultLayout from '../components/Layout/DefaultLayout.jsx';
@@ -29,6 +30,7 @@ const AppRoutes = () => {
               <Route path="user/profile" element={<ProfilePage />} />
               <Route path="user/change-password" element={<ChangePasswordPage />} />
               {/* Token router */}
+              <Route path="token" element={<TokenManagerPage />} />
               <Route path="token/new" element={<CreateTokenPage />} />
               {/* Token router */}
               {/* Wallet router */}
