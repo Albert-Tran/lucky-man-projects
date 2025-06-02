@@ -13,7 +13,7 @@ export const API_ENDPOINTS = {
     CHANGE_PASSWORD: '/api/auth/change-password'
   },
   TOKEN: {
-    CREATE: '/tokens/create',
+    CREATE: '/tokens',
     DELETE: '/tokens/delete',
     LIST: '/tokens',
     DETAIL: '/tokens/:address'

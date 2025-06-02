@@ -16,7 +16,6 @@ const CreateTokenPage = () => {
   const [address, setAddress] = useState('');
   const [chain, setChain] = useState('');
   const [name, setName] = useState('');
-  const [symbol, setSymbol] = useState('');
   const [decimals, setDecimals] = useState('');
   const [isFetchingOnChain, setIsFetchingOnChain] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
@@ -57,7 +56,6 @@ const CreateTokenPage = () => {
     try {
       const data = await fetchTokenOnChainInfo(address, chain);
       setName(data.name || '');
-      setSymbol(data.symbol || '');
       setDecimals(data.decimals !== undefined ? String(data.decimals) : ''); // Decimals có thể là số 0
     } catch (err) {
       setOnChainError(err.message || 'Không thể lấy thông tin token on-chain. Vui lòng kiểm tra địa chỉ và chain.');
@@ -86,11 +84,11 @@ const CreateTokenPage = () => {
     try {
       const tokenData = {
         address: address.toLowerCase(),
-        chain,
-        name,
-        symbol,
+        token_name: name,
         decimals: parsedDecimals,
+        chain_id: chain
       };
+      
       await tokenApi.createToken(tokenData); // Gửi dữ liệu token đã hoàn chỉnh lên backend
       alert('Token đã được tạo thành công!');
       navigate('/tokens'); // Chuyển hướng về trang danh sách token
@@ -127,7 +125,7 @@ const CreateTokenPage = () => {
             id="chain"
             className={`${styles.input} ${formErrors.chain ? styles.inputError : ''}`}
             value={chain}
-            onChange={(e) => setChain(e.target.value)}
+            onChange={(e) => setChain(Number(e.target.value))}
             disabled={isFetchingOnChain || isLoadingSubmit}
             required
           >
@@ -164,20 +162,6 @@ const CreateTokenPage = () => {
             required
           />
           {formErrors.name && <p className={styles.errorMessage}>{formErrors.name}</p>}
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="symbol" className={styles.label}>Ký hiệu Token:</label>
-          <input
-            type="text"
-            id="symbol"
-            className={`${styles.input} ${formErrors.symbol ? styles.inputError : ''}`}
-            value={symbol}
-            onChange={(e) => setSymbol(e.target.value)}
-            disabled={isLoadingSubmit}
-            required
-          />
-          {formErrors.symbol && <p className={styles.errorMessage}>{formErrors.symbol}</p>}
         </div>
 
         <div className={styles.formGroup}>

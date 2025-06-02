@@ -3,8 +3,10 @@ import { triggerLogout } from '../../utils/auth/authUtils.js';
 import authApi from '../api/authApi.js'; // Import authApi để gọi refreshToken
 import CONFIG from '../../utils/config/config.js';
 
+const API_BASE_URL = CONFIG[import.meta.env.VITE_MODE].API_BASE_URL;
+
 const httpClient = axios.create({
-  baseURL: CONFIG[import.meta.env.VITE_MODE].API_BASE_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

@@ -3,13 +3,13 @@ import { API_ENDPOINTS } from '../../utils/constants/apiEndpoints';
 
 const tokenApi = {
 
-    create: async (tokenData) => {
+    createToken: async (data) => {
         try {
-            const response = await httpClient.post(API_ENDPOINTS.TOKEN.CREATE, {tokenData});
-            if (response.data.success) {
-                return response.data;
+            const response = await httpClient.post(API_ENDPOINTS.TOKEN.CREATE, data);
+            if (response?.data?.success) {
+                return response?.data?.data;
             } else {
-                throw new Error(response.data.message || 'Tao token khong thanh cong.');
+                throw new Error(response?.data?.message || 'Tao token khong thanh cong.');
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'Tao token khong thanh cong.';
