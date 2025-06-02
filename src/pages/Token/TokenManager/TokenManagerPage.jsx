@@ -17,55 +17,48 @@ const FILTER_CHAINS = [
 ];
 
 const TokenManagerPage = () => {
-  const [tokens, setTokens] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+    const [tokens, setTokens] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE_OPTIONS[0]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  // States cho các bộ lọc
-  const [filterChain, setFilterChain] = useState('');
-  const [filterName, setFilterName] = useState('');
+    // States cho các bộ lọc
+    const [filterChain, setFilterChain] = useState(1);
+    const [filterName, setFilterName] = useState('');
 
-  // State mới cho các token đã chọn để xóa hàng loạt
-  const [selectedTokenIds, setSelectedTokenIds] = useState(new Set()); // Sử dụng Set để lưu trữ ID duy nhất
+    // State mới cho các token đã chọn để xóa hàng loạt
+    const [selectedTokenIds, setSelectedTokenIds] = useState(new Set()); // Sử dụng Set để lưu trữ ID duy nhất
 
-    // Danh sách token đã lọc để hiển thị
-    const filteredTokens = tokens.filter(token => {
-        const matchesChain = !filterChain || token.chain === filterChain;
-        const matchesText = !filterName ||
-        token.token_name.toLowerCase().includes(filterName.toLowerCase()) ||
-        token.address.toLowerCase().includes(filterName.toLowerCase());
-        return matchesChain && matchesText;
-    });
 
-  // Hàm fetch token - BÂY GIỜ SẼ KHÔNG CẦN THAM SỐ FILTER NỮA NẾU LỌC FRONTEND
-  const fetchTokens = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    setSelectedTokenIds(new Set()); // Reset các lựa chọn khi tải lại dữ liệu
-    try {
-      const data = await tokenApi.getTokens({limit: itemsPerPage, page: currentPage}); // Lấy tất cả từ backend
-      setTokens(data.tokens);
-      setTotalItems(data.total || 0);
-      const calculatedTotalPages = Math.ceil((data.total || 0) / itemsPerPage);
-        setTotalPages(calculatedTotalPages); // Cập nhật tổng số trang
-        if (currentPage > calculatedTotalPages && calculatedTotalPages > 0) {
-            setCurrentPage(calculatedTotalPages); // <--- Điều này sẽ thay đổi state currentPage
-        } else if (calculatedTotalPages === 0 && currentPage !== 1) {
-        // Nếu không có mục nào và bạn không ở trang 1, chuyển về trang 1
-        setCurrentPage(1); // <--- Điều này cũng sẽ thay đổi state currentPage
+    // Hàm fetch token - BÂY GIỜ SẼ KHÔNG CẦN THAM SỐ FILTER NỮA NẾU LỌC FRONTEND
+    const fetchTokens = useCallback(async () => {
+        setIsLoading(true);
+        setError(null);
+        setSelectedTokenIds(new Set()); // Reset các lựa chọn khi tải lại dữ liệu
+        try {
+            const filter = {limit: itemsPerPage, page: currentPage, chainId: filterChain, name:filterName };
+            const data = await tokenApi.searchTokens(filter); // Lấy tất cả từ backend
+            setTokens(data.tokens);
+            setTotalItems(data.total || 0);
+            const calculatedTotalPages = Math.ceil((data.total || 0) / itemsPerPage);
+            setTotalPages(calculatedTotalPages); // Cập nhật tổng số trang
+            if (currentPage > calculatedTotalPages && calculatedTotalPages > 0) {
+                setCurrentPage(calculatedTotalPages); // <--- Điều này sẽ thay đổi state currentPage
+            } else if (calculatedTotalPages === 0 && currentPage !== 1) {
+            // Nếu không có mục nào và bạn không ở trang 1, chuyển về trang 1
+            setCurrentPage(1); // <--- Điều này cũng sẽ thay đổi state currentPage
+            }
+        } catch (err) {
+        setError(err.message || 'Không thể tải danh sách token.');
+        console.error('Error fetching tokens:', err);
+        } finally {
+        setIsLoading(false);
         }
-    } catch (err) {
-      setError(err.message || 'Không thể tải danh sách token.');
-      console.error('Error fetching tokens:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentPage, itemsPerPage]);
+    }, [currentPage, itemsPerPage, filterChain, filterName]);
 
   // Gọi fetchTokens khi component mount
   useEffect(() => {
@@ -87,18 +80,18 @@ const TokenManagerPage = () => {
 
     // Logic chọn/bỏ chọn tất cả các token hiển thị
     const handleToggleSelectAll = () => {
-        if (selectedTokenIds.size === filteredTokens.length && filteredTokens.length > 0) {
-        // Nếu tất cả đang được chọn, bỏ chọn tất cả
-        setSelectedTokenIds(new Set());
+        if (selectedTokenIds.size === tokens.length && tokens.length > 0) {
+            // Nếu tất cả đang được chọn, bỏ chọn tất cả
+            setSelectedTokenIds(new Set());
         } else {
-        // Chọn tất cả các token hiển thị
-        const allFilteredTokenIds = new Set(filteredTokens.map(token => token.id));
-        setSelectedTokenIds(allFilteredTokenIds);
+            // Chọn tất cả các token hiển thị
+            const allFilteredTokenIds = new Set(tokens.map(token => token.id));
+            setSelectedTokenIds(allFilteredTokenIds);
         }
     };
 
     // Kiểm tra xem tất cả token hiển thị có đang được chọn không
-    const isAllSelected = filteredTokens.length > 0 && selectedTokenIds.size === filteredTokens.length;
+    const isAllSelected = tokens.length > 0 && selectedTokenIds.size === tokens.length;
 
     const handleAddToken = () => {
         navigate('/token/new');
@@ -219,8 +212,8 @@ const TokenManagerPage = () => {
         </div>
       </div>
 
-      {filteredTokens.length === 0 ? (
-        <p className={styles.noDataMessage}>filteredTokens
+      {tokens.length === 0 ? (
+        <p className={styles.noDataMessage}>tokens
           {tokens.length === 0 ? 'Chưa có token nào trên hệ thống.' : 'Không tìm thấy token nào phù hợp với bộ lọc.'}
         </p>
       ) : (
@@ -235,7 +228,7 @@ const TokenManagerPage = () => {
                         className={styles.selectAllCheckbox}
                         checked={isAllSelected}
                         onChange={handleToggleSelectAll}
-                        disabled={isLoading || filteredTokens.length === 0}
+                        disabled={isLoading || tokens.length === 0}
                     />
                     </th>
                     <th>Tên Token</th>
@@ -246,7 +239,7 @@ const TokenManagerPage = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {filteredTokens.map((token) => (
+                {tokens.map((token) => (
                     <tr key={token.id}>
                     {/* Checkbox cho từng hàng */}
                     <td>
