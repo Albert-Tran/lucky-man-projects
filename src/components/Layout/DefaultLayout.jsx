@@ -24,6 +24,11 @@ const DefaultLayout = () => {
       path: "/user/change-password"
     },
     {
+      label: "Ví",
+      requiresAuth: true,
+      path: "/wallet"
+    },
+    {
       label: "Token",
       requiresAuth: true,
       path: "/token"

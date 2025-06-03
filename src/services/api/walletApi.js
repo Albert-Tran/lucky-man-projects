@@ -3,6 +3,22 @@ import { API_ENDPOINTS } from '../../utils/constants/apiEndpoints';
 import {buildUrl} from '../../utils/helpers/urlBuilder.js';
 
 const walletApi = {
+    getWallets: async (filter) => {
+        try {
+            const response = await httpClient.get(API_ENDPOINTS.WALLET.WALLET_MANAGER, {
+                params: filter // Truyền tham số phân trang qua query params
+            } );
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Lấy danh sach vi không thành công.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Đã xảy ra lỗi khi lấy thông tin người dùng.';
+            throw new Error(errorMessage);
+        }
+    },
+
     getWalletGroups: async (filter) => {
         try {
             const response = await httpClient.get(API_ENDPOINTS.WALLET.WALLET_GROUP_MANAGER, {

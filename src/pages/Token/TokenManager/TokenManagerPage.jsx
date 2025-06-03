@@ -1,4 +1,3 @@
-// src/pages/Tokens/TokenListPage.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import tokenApi from '../../../services/api/tokenApi.js';

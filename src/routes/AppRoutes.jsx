@@ -4,6 +4,7 @@ import LoginPage from '../pages/Login/LoginPage.jsx';
 import ProfilePage from '../pages/User/Profile/ProfilePage.jsx';
 import ChangePasswordPage from '../pages/User/ChangePassword/ChangePasswordPage.jsx';
 
+import WalletManagerPage from '../pages/Wallet/WalletManager/WalletManagerPage.jsx';
 import WalletGroupManagerPage from '../pages/Wallet/WalletGroupManager/WalletGroupManagerPage.jsx';
 import CreateWalletGroupPage from '../pages/Wallet/CreateWalletGroup/CreateWalletGroupPage.jsx';
 import EditWalletGroupPage from '../pages/Wallet/EditWalletGroup/EditWalletGroupPage.jsx';
@@ -34,6 +35,8 @@ const AppRoutes = () => {
               <Route path="token/new" element={<CreateTokenPage />} />
               {/* Token router */}
               {/* Wallet router */}
+              <Route path="wallet" element={<WalletManagerPage />} />
+
               <Route path="wallet/wallet-group" element={<WalletGroupManagerPage />} />
               <Route path="wallet/wallet-group/new" element={<CreateWalletGroupPage />} />
               <Route path="wallet/wallet-group/:id/edit" element={<EditWalletGroupPage />} />
