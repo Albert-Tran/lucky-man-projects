@@ -1,5 +1,6 @@
 import httpClient from '../http/httpClient.js';
 import { API_ENDPOINTS } from '../../utils/constants/apiEndpoints';
+import {buildUrl} from '../../utils/helpers/urlBuilder.js';
 
 const tokenApi = {
 
@@ -17,13 +18,13 @@ const tokenApi = {
         }
     },
 
-    delete: async (address) => {
+    delete: async (tokenId) => {
         try {
-            const response = await httpClient.post(API_ENDPOINTS.TOKEN.DELETE, {address});
-            if (response.data.success) {
-                return response.data;
+            const response = await httpClient.delete(buildUrl(API_ENDPOINTS.TOKEN.DELETE_BY_ID, {id: tokenId}));
+            if (response?.data?.success) {
+                return response?.data?.data;
             } else {
-                throw new Error(response.data.message || 'Xoa token khong thanh cong.');
+                throw new Error(response?.data?.message || 'Xoa token khong thanh cong.');
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'Xoa token khong thanh cong.';
@@ -34,14 +35,22 @@ const tokenApi = {
     searchTokens: async (filters) => {
         try {
             const response = await httpClient.get(API_ENDPOINTS.TOKEN.SEARCH, {
-                params: filters // Truyền tham số phân trang qua query params
+                params: filters
             } );
             if (response?.data?.success) {
                 return response?.data?.data;
             } else {
+                return {
+                    total:0,
+                    tokens: []
+                }
                 throw new Error(response?.data?.message || 'Lay thong tin danh sach token khong thanh cong.');
             }
         } catch (error) {
+            return {
+                total:0,
+                tokens: []
+            }
             const errorMessage = error.response?.data?.message || error.message || 'Lay thong tin danh sach token khong thanh cong.';
             throw new Error(errorMessage);
         }

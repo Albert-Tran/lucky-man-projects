@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
   },
   TOKEN: {
     CREATE: '/tokens',
-    DELETE: '/tokens/delete',
+    DELETE_BY_ID: '/tokens/:id',
     LIST: '/tokens',
     SEARCH: 'tokens/search',
     GET_BY_NAME: '/tokens/name/:name',

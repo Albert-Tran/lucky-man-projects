@@ -12,7 +12,7 @@ const ITEMS_PER_PAGE_OPTIONS = CONFIG[import.meta.env.VITE_MODE].ITEMS_PER_PAGE_
 const SUPPORTED_CHAINS = CONFIG[import.meta.env.VITE_MODE].SUPPORTED_CHAINS;
 
 const FILTER_CHAINS = [
-  { value: '', label: 'Tất cả Chains' },
+  { value: 0, label: 'Tất cả Chains' },
   ...SUPPORTED_CHAINS
 ];
 
@@ -27,8 +27,9 @@ const TokenManagerPage = () => {
     const navigate = useNavigate();
 
     // States cho các bộ lọc
-    const [filterChain, setFilterChain] = useState(1);
+    const [filterChain, setFilterChain] = useState(0);
     const [filterName, setFilterName] = useState('');
+    const [filterAddress, setFilterAddress] = useState('');
 
     // State mới cho các token đã chọn để xóa hàng loạt
     const [selectedTokenIds, setSelectedTokenIds] = useState(new Set()); // Sử dụng Set để lưu trữ ID duy nhất
@@ -40,7 +41,8 @@ const TokenManagerPage = () => {
         setError(null);
         setSelectedTokenIds(new Set()); // Reset các lựa chọn khi tải lại dữ liệu
         try {
-            const filter = {limit: itemsPerPage, page: currentPage, chainId: filterChain, name:filterName };
+          
+            const filter ={limit: itemsPerPage, page: currentPage, chainId: filterChain, name:filterName, address: filterAddress };
             const data = await tokenApi.searchTokens(filter); // Lấy tất cả từ backend
             setTokens(data.tokens);
             setTotalItems(data.total || 0);
@@ -58,7 +60,7 @@ const TokenManagerPage = () => {
         } finally {
         setIsLoading(false);
         }
-    }, [currentPage, itemsPerPage, filterChain, filterName]);
+    }, [currentPage, itemsPerPage, filterChain, filterName, filterAddress]);
 
   // Gọi fetchTokens khi component mount
   useEffect(() => {
@@ -113,7 +115,7 @@ const TokenManagerPage = () => {
             setIsLoading(true);
             setError(null);
             try {
-            await tokenApi.deleteToken(tokenId);
+            await tokenApi.delete(tokenId);
             alert('Token đã được xóa thành công!');
             fetchTokens(); // Tải lại danh sách sau khi xóa, reset filters
             } catch (err) {
@@ -188,9 +190,20 @@ const TokenManagerPage = () => {
               type="text"
               id="textFilter"
               className={styles.filterInput}
-              placeholder="Nhập tên hoặc địa chỉ"
+              placeholder="Nhập tên"
               value={filterName}
               onChange={(e) => setFilterName(e.target.value)}
+            />
+          </div>
+          <div className={styles.filterGroup}>
+            <label htmlFor="textFilter" className={styles.filterLabel}>Lọc theo địa chỉ:</label>
+            <input
+              type="text"
+              id="textFilter"
+              className={styles.filterInput}
+              placeholder="Nhập địa chỉ"
+              value={filterAddress}
+              onChange={(e) => setFilterAddress(e.target.value)}
             />
           </div>
         </div>
@@ -213,7 +226,7 @@ const TokenManagerPage = () => {
       </div>
 
       {tokens.length === 0 ? (
-        <p className={styles.noDataMessage}>tokens
+        <p className={styles.noDataMessage}>
           {tokens.length === 0 ? 'Chưa có token nào trên hệ thống.' : 'Không tìm thấy token nào phù hợp với bộ lọc.'}
         </p>
       ) : (
@@ -270,7 +283,7 @@ const TokenManagerPage = () => {
                     <td className={styles.actionsCell}>
                         <button
                         className={styles.deleteButton}
-                        onClick={() => handleDeleteToken(token.id, token.name)}
+                        onClick={() => handleDeleteToken(token.id, token.token_name)}
                         >
                         Xóa
                         </button>
