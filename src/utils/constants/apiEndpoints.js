@@ -23,7 +23,8 @@ export const API_ENDPOINTS = {
     DETAIL: '/tokens/:address'
   },
   WALLET: {
-    WALLET_MANAGER: '/wallets',
+    WALLET_MANAGER: '/wallets/alls',
+    CREATE_NEW_WALLET: '/wallets',
     WALLET_GROUP_MANAGER: '/groups',
     CREATE_NEW_WALLET_GROUP: '/groups',
     GET_WALLET_GROUP_BY_ID: '/groups/:id',

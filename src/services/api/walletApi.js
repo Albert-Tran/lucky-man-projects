@@ -19,6 +19,20 @@ const walletApi = {
         }
     },
 
+    createWallet: async (data) => {
+        try {
+            const response = await httpClient.post(API_ENDPOINTS.WALLET.CREATE_NEW_WALLET, data);
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Tạo ví không thành công');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Đã xảy ra lỗi khi tạo ví.';
+            throw new Error(errorMessage);
+        }
+    },
+
     getWalletGroups: async (filter) => {
         try {
             const response = await httpClient.get(API_ENDPOINTS.WALLET.WALLET_GROUP_MANAGER, {
