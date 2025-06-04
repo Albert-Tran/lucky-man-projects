@@ -33,6 +33,36 @@ const walletApi = {
         }
     },
 
+    deleteWalletById: async (id) => {
+        try {
+            
+            const response = await httpClient.delete(buildUrl(API_ENDPOINTS.WALLET.DELETE_WALLET_BY_ID, {id: id}));
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Xoa vi không thành công.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Đã xảy ra lỗi khi xoa vi.';
+            throw new Error(errorMessage);
+        }
+    },
+
+    exportWallets: async (data) => {
+        try {
+            const response = await httpClient.post(API_ENDPOINTS.WALLET.EXPORT_WALLETS, data);
+            console.log('response', response.data);
+            if (response?.status === 201) {
+                return response?.data;
+            } else {
+                throw new Error(response?.message || 'Tạo ví không thành công');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Đã xảy ra lỗi khi tạo ví.';
+            throw new Error(errorMessage);
+        }
+    },
+
     getWalletGroups: async (filter) => {
         try {
             const response = await httpClient.get(API_ENDPOINTS.WALLET.WALLET_GROUP_MANAGER, {

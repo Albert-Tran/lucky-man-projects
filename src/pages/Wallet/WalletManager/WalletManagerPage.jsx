@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import walletApi from '../../../services/api/walletApi.js';
 import LoadingSpinner from '../../../components/Common/LoadingSpinner/LoadingSpinner.jsx';
+import ExportWalletModal from '../../../components/Wallet/ExportWalletModal/ExportWalletModal.jsx';
 import styles from './WalletManagerPage.module.css'; // Import CSS riêng cho trang này
 import Pagination from '../../../components/Common/Pagination/Pagination.jsx';
 import CONFIG from '../../../utils/config/config.js';
@@ -23,6 +24,9 @@ const WalletManagerPage = () => {
     const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE_OPTIONS[0]);
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [showExportModal, setShowExportModal] = useState(false);
+    const [message, setMessage] = useState("");
+    
     const navigate = useNavigate();
 
     // States cho các bộ lọc
@@ -70,69 +74,69 @@ const WalletManagerPage = () => {
   }, [fetchWallets]);
 
   // Logic chọn/bỏ chọn một wallet
-    const handleToggleSelectWallet = (walletId) => {
-        setSelectedWalletIds(prevSelected => {
-            const newSelected = new Set(prevSelected);
-            if (newSelected.has(walletId)) {
-            newSelected.delete(walletId);
-            } else {
-            newSelected.add(walletId);
-            }
-            return newSelected;
-        });
-    };
+  const handleToggleSelectWallet = (walletId) => {
+      setSelectedWalletIds(prevSelected => {
+          const newSelected = new Set(prevSelected);
+          if (newSelected.has(walletId)) {
+          newSelected.delete(walletId);
+          } else {
+          newSelected.add(walletId);
+          }
+          return newSelected;
+      });
+  };
 
-    const getWalletGroupNameById = (groupId) => {
-        const group = walletGroups.find(g => g.id === groupId);
-        return group ? group.name : 'Không có nhóm';
-    };
+  const getWalletGroupNameById = (groupId) => {
+      const group = walletGroups.find(g => g.id === groupId);
+      return group ? group.name : 'Không có nhóm';
+  };
 
-    // Logic chọn/bỏ chọn tất cả các wallet hiển thị
-    const handleToggleSelectAll = () => {
-        if (selectedWalletIds.size === wallets.length && wallets.length > 0) {
-            // Nếu tất cả đang được chọn, bỏ chọn tất cả
-            setSelectedWalletIds(new Set());
-        } else {
-            // Chọn tất cả các wallet hiển thị
-            const allFilteredWalletIds = new Set(wallets.map(wallet => wallet.id));
-            setSelectedWalletIds(allFilteredWalletIds);
+  // Logic chọn/bỏ chọn tất cả các wallet hiển thị
+  const handleToggleSelectAll = () => {
+      if (selectedWalletIds.size === wallets.length && wallets.length > 0) {
+          // Nếu tất cả đang được chọn, bỏ chọn tất cả
+          setSelectedWalletIds(new Set());
+      } else {
+          // Chọn tất cả các wallet hiển thị
+          const allFilteredWalletIds = new Set(wallets.map(wallet => wallet.id));
+          setSelectedWalletIds(allFilteredWalletIds);
+      }
+  };
+
+  // Kiểm tra xem tất cả wallet hiển thị có đang được chọn không
+  const isAllSelected = wallets.length > 0 && selectedWalletIds.size === wallets.length;
+
+  const handleAddWallet = () => {
+      navigate('/wallet/new');
+  };
+
+  const handlePageChange = (pageNumber) => {
+      if (pageNumber > 0 && pageNumber <= totalPages) {
+          setCurrentPage(pageNumber);
+      }
+  };
+
+  const handleItemsPerPageChange = (e) => {
+      setItemsPerPage(Number(e.target.value));
+      setCurrentPage(1);
+  };
+
+  const handleDeleteWallet = async (walletId, walletAddress) => {
+    if (window.confirm(`Bạn có chắc chắn muốn xóa wallet "${walletAddress}" không?`)) {
+        setIsLoading(true);
+        setError(null);
+        try {
+        await walletApi.deleteWalletById(walletId);
+        alert('Wallet đã được xóa thành công!');
+        fetchWallets(); // Tải lại danh sách sau khi xóa, reset filters
+        } catch (err) {
+        setError(err.message || 'Không thể xóa wallet.');
+        console.error('Error deleting wallet:', err);
+        } finally {
+        setIsLoading(false);
         }
-    };
-
-    // Kiểm tra xem tất cả wallet hiển thị có đang được chọn không
-    const isAllSelected = wallets.length > 0 && selectedWalletIds.size === wallets.length;
-
-    const handleAddWallet = () => {
-        navigate('/wallet/new');
-    };
-
-    const handlePageChange = (pageNumber) => {
-        if (pageNumber > 0 && pageNumber <= totalPages) {
-            setCurrentPage(pageNumber);
-        }
-    };
-
-    const handleItemsPerPageChange = (e) => {
-        setItemsPerPage(Number(e.target.value));
-        setCurrentPage(1);
-    };
-
-    const handleDeleteWallet = async (walletId, walletAddress) => {
-        if (window.confirm(`Bạn có chắc chắn muốn xóa wallet "${walletAddress}" không?`)) {
-            setIsLoading(true);
-            setError(null);
-            try {
-            await walletApi.delete(walletId);
-            alert('Wallet đã được xóa thành công!');
-            fetchWallets(); // Tải lại danh sách sau khi xóa, reset filters
-            } catch (err) {
-            setError(err.message || 'Không thể xóa wallet.');
-            console.error('Error deleting wallet:', err);
-            } finally {
-            setIsLoading(false);
-            }
-        }
-    };
+    }
+  };
 
   // Hàm xử lý xóa nhiều wallet
   const handleDeleteSelectedWallets = async () => {
@@ -158,6 +162,9 @@ const WalletManagerPage = () => {
     }
   };
 
+  const handleExportSuccess = (msg) => {
+    setMessage(msg);
+  };
 
   if (isLoading) {
     return (
@@ -175,6 +182,7 @@ const WalletManagerPage = () => {
   return (
     <div className={styles.pageContainer}>
       <h1 className={styles.pageTitle}>Quản Lý Ví</h1>
+      {message && <p className={styles.messageSuccess}>{message}</p>}
       <div className={styles.actionBar}>
         {/* Filter Controls */}
         <div className={styles.filterControls}>
@@ -195,8 +203,20 @@ const WalletManagerPage = () => {
           <button className={styles.addButton} onClick={handleAddWallet}>
             Thêm Ví Mới
           </button>
+          <button className={styles.importButton} onClick={handleAddWallet}>
+            Import Vi
+          </button>
+          <button className={styles.exportButton} onClick={() => setShowExportModal(true)}>Export Vi</button>
         </div>
       </div>
+
+      {showExportModal && (
+        <ExportWalletModal
+          walletGroups={walletGroups}
+          onClose={() => setShowExportModal(false)} // Hàm đóng modal
+          onExportSuccess={handleExportSuccess} // Hàm xử lý thành công
+        />
+      )}
 
       {wallets.length === 0 ? (
         <p className={styles.noDataMessage}>

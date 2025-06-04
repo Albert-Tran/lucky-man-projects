@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './WalletForm.module.css';
-import { validateRequired, validateNumber, composeValidators } from '../../../utils/helpers/validators.js';
+import { validateRequired, validateNumber, validateMin, composeValidators } from '../../../utils/helpers/validators.js';
 
 const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError, isFetchingWalletGroups, onSubmit, isLoading, error, buttonText }) => {
   const [walletCount, setWalletCount] = useState(0);
@@ -22,7 +22,7 @@ const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError,
   );
 
   const validateWalletGroupId = composeValidators(
-    (value) => validateRequired(value, 'Nhom Ví')
+    (value) => validateMin(value, 1, 'Nhom Ví')
   );
 
   const validateForm = () => {
@@ -69,6 +69,7 @@ const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError,
           onChange={(e) => setWalletGroupId(Number(e.target.value))}
           disabled={isFetchingWalletGroups || isLoading}
         >
+          <option key="" value="">Lua chon nhom vi</option>
           {walletGroups.map(walletGroup => (
             <option key={walletGroup.value} value={walletGroup.value}>{walletGroup.label}</option>
           ))}
