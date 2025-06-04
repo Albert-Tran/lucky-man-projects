@@ -1,5 +1,5 @@
 // src/pages/WalletGroups/CreateWalletGroupPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WalletForm from '../../../components/Wallet/WalletForm/WalletForm.jsx';
 import walletApi from '../../../services/api/walletApi.js';
@@ -16,10 +16,10 @@ const CreateWalletGroupPage = () => {
     useEffect(() => {
         const fetchWalletGroups = async () => {
             setIsFetchingWalletGroups(true);
-            setFetchingError(null);
+            setFetchingWalletGroupsError(null);
             try {
                 const data = await walletApi.getWalletGroups({});
-                const formattedGroups = data.map(group => ({
+                const formattedGroups = data.groups.map(group => ({
                     value: group.id,
                     label: group.name
                 }));
@@ -41,10 +41,10 @@ const CreateWalletGroupPage = () => {
         console.log(formData);
         try {
             await walletApi.createWallet(formData);
-            alert('Nhóm ví đã được tạo thành công!');
+            alert('Ví đã được tạo thành công!');
             navigate('/wallet');
         } catch (err) {
-            setError(err.message || 'Không thể tạo nhóm ví. Vui lòng thử lại.');
+            setError(err.message || 'Không thể tạo ví. Vui lòng thử lại.');
             console.error('Error creating wallet group:', err);
         } finally {
             setIsLoading(false);
@@ -59,10 +59,10 @@ const CreateWalletGroupPage = () => {
             isLoading={isLoading}
             error={error}
             isFetchingWalletGroups={isFetchingWalletGroups}
-            fetchingError={fetchingError}
-            initialData={{}}
+            fetchingWalletGroupsError={fetchingWalletGroupsError}
             walletGroups={walletGroups}
-            buttonText="Tạo Nhóm Ví"
+            initialData={{}}
+            buttonText="Tạo Ví"
         />
         </div>
     );

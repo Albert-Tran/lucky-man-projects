@@ -1,58 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import styles from './WalletForm.module.css';
-import { validateRequired, validateMinLength, composeValidators } from '../../../utils/helpers/validators.js';
+import { validateRequired, validateNumber, composeValidators } from '../../../utils/helpers/validators.js';
 
-const WalletGroupForm = ({ initialData, walletGroups, onSubmit, isLoading, error, buttonText }) => {
+const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError, isFetchingWalletGroups, onSubmit, isLoading, error, buttonText }) => {
   const [walletCount, setWalletCount] = useState(0);
-  const [errors, setErrors] = useState({});
+  const [walletGroupId, setWalletGroupId] = useState(0);
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     if (initialData) {
-      setName(initialData.name || '');
+      setWalletCount(initialData.walletCount || '');
     } else {
-      setName('');
+      setWalletCount('');
     }
-    setErrors({}); // Xóa lỗi khi dữ liệu ban đầu thay đổi
+    setFormErrors({}); // Xóa lỗi khi dữ liệu ban đầu thay đổi
   }, [initialData]);
 
-  const validateName = composeValidators(
-    (value) => validateRequired(value, 'Tên Ví'),
-    (value) => validateMinLength(value, 5, 'Tên ví'), // Ví dụ min length 8
+  const validateWalletCount = composeValidators(
+    (value) => validateRequired(value, 'So luong Ví'),
+    (value) => validateNumber(value, 'so luong ví')
+  );
+
+  const validateWalletGroupId = composeValidators(
+    (value) => validateRequired(value, 'Nhom Ví')
   );
 
   const validateForm = () => {
-    const newErrors = {};
+    const errors = {};
 
-    const nameError = validateName(name);
-    if (nameError) newErrors.name = nameError;
+    const walletCountError = validateWalletCount(walletCount);
+    if (walletCountError) errors.walletCount = walletCountError;
+    console.log(walletGroupId);
+    const walletGroupIdError = validateWalletGroupId(walletGroupId);
+    if (walletGroupIdError) errors.walletGroupId = walletGroupIdError;
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
   
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit({ name });
+      onSubmit({ count: walletCount, group_id: walletGroupId });
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.formGroup}>
-        <label htmlFor="name" className={styles.label}>Tên nhóm ví:</label>
+        <label htmlFor="name" className={styles.label}>So luong ví:</label>
         <input
           type="text"
-          id="name"
-          className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          id="wallet_count"
+          className={`${styles.input} ${formErrors.walletCount ? styles.inputError : ''}`}
+          value={walletCount}
+          onChange={(e) => setWalletCount(e.target.value)}
           disabled={isLoading}
         />
-        {errors.name && <p className={styles.errorMessage}>{errors.name}</p>}
+        {formErrors.walletCount && <p className={styles.errorMessage}>{formErrors.walletCount}</p>}
       </div>
-
+      <div className={styles.formGroup}>
+        <label htmlFor="chain" className={styles.label}>Nhom vi:</label>
+        <select
+          id="wallet_group_id"
+          className={`${styles.input} ${formErrors.walletGroupId ? styles.inputError : ''}`}
+          value={walletGroupId}
+          onChange={(e) => setWalletGroupId(Number(e.target.value))}
+          disabled={isFetchingWalletGroups || isLoading}
+        >
+          {walletGroups.map(walletGroup => (
+            <option key={walletGroup.value} value={walletGroup.value}>{walletGroup.label}</option>
+          ))}
+        </select>
+        {formErrors.walletGroupId && <p className={styles.errorMessage}>{formErrors.walletGroupId}</p>}
+      </div>
       {error && <p className={styles.serverError}>{error}</p>}
 
       <button type="submit" className={styles.submitButton} disabled={isLoading}>
