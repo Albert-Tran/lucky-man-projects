@@ -8,12 +8,6 @@ import Pagination from '../../../components/Common/Pagination/Pagination.jsx';
 import CONFIG from '../../../utils/config/config.js';
 
 const ITEMS_PER_PAGE_OPTIONS = CONFIG[import.meta.env.VITE_MODE].ITEMS_PER_PAGE_OPTIONS;
-const SUPPORTED_CHAINS = CONFIG[import.meta.env.VITE_MODE].SUPPORTED_CHAINS;
-
-const FILTER_CHAINS = [
-  { value: 0, label: 'Tất cả Chains' },
-  ...SUPPORTED_CHAINS
-];
 
 const WalletManagerPage = () => {
     const [wallets, setWallets] = useState([]);
@@ -72,6 +66,21 @@ const WalletManagerPage = () => {
   useEffect(() => {
     fetchWallets();
   }, [fetchWallets]);
+
+  useEffect(() => {
+    let timer;
+    if (message) {
+      timer = setTimeout(() => {
+        setMessage('');
+      }, 3000);
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [message]);
 
   // Logic chọn/bỏ chọn một wallet
   const handleToggleSelectWallet = (walletId) => {
