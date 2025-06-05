@@ -17,12 +17,12 @@ const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError,
   }, [initialData]);
 
   const validateWalletCount = composeValidators(
-    (value) => validateRequired(value, 'So luong Ví'),
-    (value) => validateNumber(value, 'so luong ví')
+    (value) => validateRequired(value, 'Số lượng ví'),
+    (value) => validateNumber(value, 'Số lượng ví')
   );
 
   const validateWalletGroupId = composeValidators(
-    (value) => validateMin(value, 1, 'Nhom Ví')
+    (value) => validateMin(value, 1, 'Nhóm Ví')
   );
 
   const validateForm = () => {
@@ -30,7 +30,6 @@ const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError,
 
     const walletCountError = validateWalletCount(walletCount);
     if (walletCountError) errors.walletCount = walletCountError;
-    console.log(walletGroupId);
     const walletGroupIdError = validateWalletGroupId(walletGroupId);
     if (walletGroupIdError) errors.walletGroupId = walletGroupIdError;
 
@@ -49,7 +48,7 @@ const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError,
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.formGroup}>
-        <label htmlFor="name" className={styles.label}>So luong ví:</label>
+        <label htmlFor="name" className={styles.label}>Số lượng ví:</label>
         <input
           type="text"
           id="wallet_count"
@@ -61,7 +60,7 @@ const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError,
         {formErrors.walletCount && <p className={styles.errorMessage}>{formErrors.walletCount}</p>}
       </div>
       <div className={styles.formGroup}>
-        <label htmlFor="chain" className={styles.label}>Nhom vi:</label>
+        <label htmlFor="chain" className={styles.label}>Nhóm ví:</label>
         <select
           id="wallet_group_id"
           className={`${styles.input} ${formErrors.walletGroupId ? styles.inputError : ''}`}
@@ -69,7 +68,7 @@ const WalletGroupForm = ({ initialData, walletGroups, fetchingWalletGroupsError,
           onChange={(e) => setWalletGroupId(Number(e.target.value))}
           disabled={isFetchingWalletGroups || isLoading}
         >
-          <option key="" value="">Lua chon nhom vi</option>
+          <option key="" value="">Lựa chọn nhóm ví</option>
           {walletGroups.map(walletGroup => (
             <option key={walletGroup.value} value={walletGroup.value}>{walletGroup.label}</option>
           ))}

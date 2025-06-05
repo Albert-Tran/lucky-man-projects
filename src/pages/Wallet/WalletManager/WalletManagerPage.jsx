@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import walletApi from '../../../services/api/walletApi.js';
 import LoadingSpinner from '../../../components/Common/LoadingSpinner/LoadingSpinner.jsx';
 import ExportWalletModal from '../../../components/Wallet/ExportWalletModal/ExportWalletModal.jsx';
+import ImportWalletModal from '../../../components/Wallet/ImportWalletModal/ImportWalletModal.jsx';
 import styles from './WalletManagerPage.module.css'; // Import CSS riêng cho trang này
 import Pagination from '../../../components/Common/Pagination/Pagination.jsx';
 import CONFIG from '../../../utils/config/config.js';
@@ -19,6 +20,7 @@ const WalletManagerPage = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [showExportModal, setShowExportModal] = useState(false);
+    const [showImportModal, setShowImportModal] = useState(false);
     const [message, setMessage] = useState("");
     
     const navigate = useNavigate();
@@ -55,7 +57,7 @@ const WalletManagerPage = () => {
             setCurrentPage(1); // <--- Điều này cũng sẽ thay đổi state currentPage
             }
         } catch (err) {
-        setError(err.message || 'Không thể tải danh sách wallet.');
+        setError(err.message || 'Không thể tải danh sách ví.');
         console.error('Error fetching wallets:', err);
         } finally {
         setIsLoading(false);
@@ -131,12 +133,12 @@ const WalletManagerPage = () => {
   };
 
   const handleDeleteWallet = async (walletId, walletAddress) => {
-    if (window.confirm(`Bạn có chắc chắn muốn xóa wallet "${walletAddress}" không?`)) {
+    if (window.confirm(`Bạn có chắc chắn muốn xóa ví "${walletAddress}" không?`)) {
         setIsLoading(true);
         setError(null);
         try {
         await walletApi.deleteWalletById(walletId);
-        alert('Wallet đã được xóa thành công!');
+        alert('Ví đã được xóa thành công!');
         fetchWallets(); // Tải lại danh sách sau khi xóa, reset filters
         } catch (err) {
         setError(err.message || 'Không thể xóa wallet.');
@@ -175,6 +177,11 @@ const WalletManagerPage = () => {
     setMessage(msg);
   };
 
+  const handleImportSuccess = (msg) => {
+    setMessage(msg);
+    fetchWallets(); // Tải lại danh sách ví sau khi import thành công
+  }
+
   if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
@@ -212,10 +219,10 @@ const WalletManagerPage = () => {
           <button className={styles.addButton} onClick={handleAddWallet}>
             Thêm Ví Mới
           </button>
-          <button className={styles.importButton} onClick={handleAddWallet}>
-            Import Vi
+          <button className={styles.importButton} onClick={() => setShowImportModal(true)}>
+            Import Ví
           </button>
-          <button className={styles.exportButton} onClick={() => setShowExportModal(true)}>Export Vi</button>
+          <button className={styles.exportButton} onClick={() => setShowExportModal(true)}>Export Ví</button>
         </div>
       </div>
 
@@ -227,9 +234,18 @@ const WalletManagerPage = () => {
         />
       )}
 
+      {showImportModal && (
+        <ImportWalletModal
+          walletGroups={walletGroups}
+          onClose={() => setShowImportModal(false)}
+          onExportSuccess={handleImportSuccess} // Hàm xử lý thành công
+        />
+      )}
+
+
       {wallets.length === 0 ? (
         <p className={styles.noDataMessage}>
-          {wallets.length === 0 ? 'Chưa có wallet nào trên hệ thống.' : 'Không tìm thấy wallet nào phù hợp với bộ lọc.'}
+          {wallets.length === 0 ? 'Chưa có ví nào trên hệ thống.' : 'Không tìm thấy ví nào phù hợp với bộ lọc.'}
         </p>
       ) : (
         <>
@@ -247,8 +263,8 @@ const WalletManagerPage = () => {
                     />
                     </th>
                     <th>Địa chỉ Ví</th>
-                    <th>Group</th>
-                    <th>Native Balance</th>
+                    <th>Nhóm ví</th>
+                    <th>Số dư</th>
                     <th>Thao tác</th>
                 </tr>
                 </thead>

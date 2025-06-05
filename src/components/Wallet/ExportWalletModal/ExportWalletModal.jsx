@@ -35,7 +35,7 @@ const ExportWalletModal = ({ walletGroups, onClose, onExportSuccess }) => {
 
   const handleExport = async () => {
     setFormError(null);
-    const error = validateRequired(selectedGroupId, 'Nhom vi');
+    const error = validateRequired(selectedGroupId, 'Nhóm ví');
     
     if (error) {
       setFormError(error);
@@ -54,11 +54,11 @@ const ExportWalletModal = ({ walletGroups, onClose, onExportSuccess }) => {
         link.click();
         link.remove();
         window.URL.revokeObjectURL(url);
-        onExportSuccess(`Export thanh cong cac vi cua nhom: ${selectedGroupName}`);
+        onExportSuccess(`Export thành công các ví của nhóm: ${selectedGroupName}`);
         onClose();
     } catch (err) {
       console.error('Error exporting wallets:', err);
-      setError(err.response?.data?.message || 'Failed to export wallets. Please try again.');
+      setError(err.response?.data?.message || 'Có lỗi trong quá trình export. Thử lại sau');
     } finally {
       setLoading(false);
     }
@@ -71,11 +71,11 @@ const ExportWalletModal = ({ walletGroups, onClose, onExportSuccess }) => {
         <button className={styles.closeButton} onClick={onClose} disabled={loading}>
           &times; {/* Dấu 'x' cho nút đóng */}
         </button>
-        <h3>Export Wallets</h3>
-        <p>Select a group to export wallets from:</p>
+        <h3>Export Ví</h3>
+        <p>Chọn một nhóm để export</p>
 
         <div className={styles.formGroup}>
-          <label htmlFor="exportGroup">Wallet Group:</label>
+          <label htmlFor="exportGroup">Nhóm ví:</label>
           <select
             id="exportGroup"
             value={selectedGroupId}
@@ -85,7 +85,7 @@ const ExportWalletModal = ({ walletGroups, onClose, onExportSuccess }) => {
               setFormError(null);
             }}
           >
-            <option value="">Select Group</option>
+            <option value="">Chọn nhóm</option>
             {walletGroups.map((group) => (
               <option key={group.id} value={group.id}>
                 {group.name}

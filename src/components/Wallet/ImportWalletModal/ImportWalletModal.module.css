@@ -1,0 +1,190 @@
+/* src/components/ExportWalletModal.module.css */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  min-width: 350px;
+  max-width: 500px;
+  text-align: center;
+  color: #333;
+  position: relative; /* Quan trọng: Để nút đóng có thể được định vị tương đối với modal content */
+}
+
+.modalContent h3 {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+.modalContent p {
+  margin-bottom: 15px;
+  font-size: 1em;
+  color: #555;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.formGroup select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  appearance: none;
+  background-color: white;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23555' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.formGroup select:hover {
+  border-color: #bbb;
+}
+
+.formGroup select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 25px;
+  gap: 15px;
+}
+
+.buttonGroup button {
+  flex: 1;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  border: none;
+}
+
+.buttonGroup button:first-child {
+  background-color: #007bff;
+  color: white;
+}
+
+.buttonGroup button:first-child:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.buttonGroup button:last-child { /* Button "Close" */
+  background-color: #6c757d;
+  color: white;
+}
+
+.buttonGroup button:last-child:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.buttonGroup button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.errorMessage {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+.successMessage {
+  color: #28a745;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+/* --- New: Close Button Style --- */
+.closeButton {
+  position: absolute; /* Định vị tuyệt đối so với modalContent */
+  top: 10px;
+  right: 15px;
+  background: none; /* Không có nền */
+  border: none; /* Không có viền */
+  font-size: 2em; /* Kích thước lớn hơn cho dấu 'x' */
+  cursor: pointer;
+  color: #888;
+  padding: 0;
+  line-height: 1; /* Đảm bảo dấu 'x' không bị lệch */
+  transition: color 0.2s ease-in-out;
+}
+
+.closeButton:hover {
+  color: #333;
+}
+
+.closeButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  color: #555;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng width */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.inputError {
+  border-color: #dc3545; /* Màu đỏ cho input bị lỗi */
+}

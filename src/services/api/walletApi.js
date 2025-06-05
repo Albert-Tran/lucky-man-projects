@@ -48,6 +48,20 @@ const walletApi = {
         }
     },
 
+    importWallet: async (data) => {
+        try {
+            const response = await httpClient.post(API_ENDPOINTS.WALLET.IMPORT_WALLET, data);
+            if (response?.status === 201) {
+                return response?.data;
+            } else {
+                throw new Error(response?.message || 'Tạo ví không thành công');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Đã xảy ra lỗi khi tạo ví.';
+            throw new Error(errorMessage);
+        }
+    },
+
     exportWallets: async (data) => {
         try {
             const response = await httpClient.post(API_ENDPOINTS.WALLET.EXPORT_WALLETS, data);

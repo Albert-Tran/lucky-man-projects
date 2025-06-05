@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
     CREATE_NEW_WALLET: '/wallets',
     DELETE_WALLET_BY_ID: '/wallets/:id',
     EXPORT_WALLETS: 'wallets/export',
+    IMPORT_WALLET: 'wallets/import',
     WALLET_GROUP_MANAGER: '/groups',
     CREATE_NEW_WALLET_GROUP: '/groups',
     GET_WALLET_GROUP_BY_ID: '/groups/:id',
