@@ -9,6 +9,7 @@ import CreateWalletPage from '../pages/Wallet/CreateWallet/CreateWalletPage.jsx'
 import WalletGroupManagerPage from '../pages/Wallet/WalletGroupManager/WalletGroupManagerPage.jsx';
 import CreateWalletGroupPage from '../pages/Wallet/CreateWalletGroup/CreateWalletGroupPage.jsx';
 import EditWalletGroupPage from '../pages/Wallet/EditWalletGroup/EditWalletGroupPage.jsx';
+import DetailWalletGroupPage from '../pages/Wallet/DetailWalletGroup/DetailWalletGroupPage.jsx';
 
 import CreateTokenPage from '../pages/Token/CreateToken/CreateTokenPage.jsx';
 import TokenManagerPage from '../pages/Token/TokenManager/TokenManagerPage.jsx';
@@ -41,6 +42,7 @@ const AppRoutes = () => {
 
               <Route path="wallet/wallet-group" element={<WalletGroupManagerPage />} />
               <Route path="wallet/wallet-group/new" element={<CreateWalletGroupPage />} />
+              <Route path="wallet/wallet-group/:id" element={<DetailWalletGroupPage />} />
               <Route path="wallet/wallet-group/:id/edit" element={<EditWalletGroupPage />} />
               {/* Wallet router */}
             </Route>

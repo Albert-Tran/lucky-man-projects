@@ -16,6 +16,7 @@ export const API_ENDPOINTS = {
     CREATE: '/tokens',
     DELETE_BY_ID: '/tokens/:id',
     LIST: '/tokens',
+    LIST_BY_CHAIN_ID: '/tokens/chain/:id',
     SEARCH: 'tokens/search',
     GET_BY_NAME: '/tokens/name/:name',
     GET_BY_ADDRESS: '/tokens/address/:address',
@@ -23,6 +24,7 @@ export const API_ENDPOINTS = {
     DETAIL: '/tokens/:address'
   },
   WALLET: {
+    GET_WALLETS_WITH_TOKEN_BALANCE: '/wallets/token-balances',
     WALLET_MANAGER: '/wallets/alls',
     CREATE_NEW_WALLET: '/wallets',
     DELETE_WALLET_BY_ID: '/wallets/:id',

@@ -16,17 +16,17 @@ const EditWalletGroupPage = () => {
   const [fetchError, setFetchError] = useState(null);
 
     const fetchWalletGroupData = useCallback(async () => {
-    setLoadingInitialData(true);
-    setFetchError(null);
-    try {
-        const data = await walletApi.getWalletGroupById(id);
-        setInitialData(data);
-    } catch (err) {
-        setFetchError(err.message || 'Không thể tải thông tin nhóm ví.');
-        console.error('Error fetching wallet group:', err);
-    } finally {
-        setLoadingInitialData(false);
-    }
+      setLoadingInitialData(true);
+      setFetchError(null);
+      try {
+          const data = await walletApi.getWalletGroupById(id);
+          setInitialData(data);
+      } catch (err) {
+          setFetchError(err.message || 'Không thể tải thông tin nhóm ví.');
+          console.error('Error fetching wallet group:', err);
+      } finally {
+          setLoadingInitialData(false);
+      }
     }, [id]);
 
   useEffect(() => {

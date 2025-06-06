@@ -1,0 +1,79 @@
+/* src/components/BalanceDisplayTable.module.css */
+
+.tableContainer {
+  margin-top: 30px;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tableTitle {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.balanceTable {
+  width: 100%;
+  border-collapse: collapse; /* Gộp các đường viền */
+  margin-bottom: 20px;
+}
+
+.balanceTable th,
+.balanceTable td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 0.95em;
+}
+
+.balanceTable thead th {
+  background-color: #f2f2f2;
+  color: #555;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.balanceTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Màu nền xen kẽ cho hàng chẵn */
+}
+
+.balanceTable tbody tr:hover {
+  background-color: #eef; /* Highlight khi di chuột qua */
+}
+
+/* Messages */
+.loadingMessage {
+  text-align: center;
+  font-size: 1.2em;
+  color: #007bff;
+  padding: 20px;
+  background-color: #e0f2f7;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.errorMessage {
+  text-align: center;
+  font-size: 1.1em;
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.noDataMessage {
+  text-align: center;
+  font-size: 1.1em;
+  color: #6c757d;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+}

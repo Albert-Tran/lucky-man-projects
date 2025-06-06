@@ -10,7 +10,7 @@ import CONFIG from '../../../utils/config/config.js';
 
 const SUPPORTED_CHAINS = CONFIG[import.meta.env.VITE_MODE].SUPPORTED_CHAINS;
 const SELECTED_CHAINS = [
-  { value: '', label: 'Chon Chains' },
+  { value: '', label: 'Chọn chain' },
   ...SUPPORTED_CHAINS
 ];
 

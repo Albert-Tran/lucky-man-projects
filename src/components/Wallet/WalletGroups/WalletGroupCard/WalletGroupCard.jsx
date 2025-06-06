@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './WalletGroupCard.module.css';
+import {formatToVietnamTime} from '../../../../utils/helpers/dateTimeHelpers';
 
 const WalletGroupCard = ({ group, isSelected, onSelect, onEdit, onDelete }) => {
   const handleCheckboxChange = () => {
@@ -21,7 +22,9 @@ const WalletGroupCard = ({ group, isSelected, onSelect, onEdit, onDelete }) => {
         <h3 className={styles.groupName}>{group.name}</h3>
         <p className={styles.groupDescription}>{group.description || 'Không có mô tả.'}</p>
         <div className={styles.groupStats}>
-          <p>Số lượng ví: <strong>{group.walletCount || 0}</strong></p>
+          {/* <p>Số lượng ví: <strong>{group.walletCount || 0}</strong></p> */}
+          <p>Ngày tạo: <strong>{formatToVietnamTime(group.created_at)}</strong></p>
+          
           {/* Bạn có thể thêm các thông tin khác như ngày tạo, người tạo */}
         </div>
       </Link>
