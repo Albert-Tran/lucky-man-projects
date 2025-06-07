@@ -1,8 +1,7 @@
-// src/components/BalanceDisplayTable.jsx
 import React from 'react';
 import styles from './WalletTable.module.css';
 
-const WalletTable = ({ data, loading, error }) => {
+const WalletTable = ({ totalBalance, walletData, loading, error }) => {
   if (loading) {
     return <div className={styles.loadingMessage}>Đang tải dữ liệu ...</div>;
   }
@@ -11,13 +10,13 @@ const WalletTable = ({ data, loading, error }) => {
     return <div className={styles.errorMessage}>Lỗi: {error}</div>;
   }
 
-  if (!data || data.length === 0) {
+  if (!walletData || walletData.length === 0) {
     return <div className={styles.noDataMessage}>Không có ví nào.</div>;
   }
 
   return (
     <div className={styles.tableContainer}>
-      <h3 className={styles.tableTitle}>Danh sách ví</h3>
+      <h3 className={styles.tableTitle}>Tổng số dư: {totalBalance}</h3>
       <table className={styles.balanceTable}>
         <thead>
           <tr>
@@ -26,10 +25,10 @@ const WalletTable = ({ data, loading, error }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <tr key={item.address || index}> {/* Sử dụng address làm key nếu có */}
+          {walletData.map((item, index) => (
+            <tr key={item.address || index}>
               <td>{item.address}</td>
-              <td>{item.tokenBalance}</td>
+              <td>{item.balance}</td>
             </tr>
           ))}
         </tbody>

@@ -1,0 +1,128 @@
+/* src/components/WalletInputGroup.module.css */
+
+.inputGroupContainer {
+  margin-bottom: 25px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.groupLabel {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #333;
+  font-size: 1.1em;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.walletInputRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Áp dụng cho cả input và select */
+.walletInputField {
+  flex-grow: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.walletInputField:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Style riêng cho select để có mũi tên tùy chỉnh */
+.walletInputField[type="select"],
+.walletInputField { /* Áp dụng cho cả thẻ <select> */
+  appearance: none; /* Xóa style mặc định của trình duyệt */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23555' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  background-color: white; /* Đảm bảo nền trắng cho select */
+  cursor: pointer;
+}
+
+.walletInputField:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.removeWalletButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 35px;
+  height: 35px;
+  min-width: 35px; /* Đảm bảo không bị co lại */
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.removeWalletButton:hover {
+  background-color: #c82333;
+}
+
+.addWalletButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95em;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.addWalletButton:hover {
+  background-color: #218838;
+}
+
+.loadMoreTokenButton {
+  background-color: #007bff; /* Màu xanh dương giống nút add wallet */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95em;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.loadMoreTokenButton:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.loadMoreTokenButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.noMoreOptionsMessage {
+  text-align: center;
+  font-size: 0.9em;
+  color: #777;
+  margin-top: 10px;
+}

@@ -1,0 +1,15 @@
+/* src/components/TokenSelect.module.css */
+.tokenSelectContainer {
+  margin-bottom: 1rem;
+}
+
+/* Override default react-select styling if needed */
+/* .tokenSelectContainer :global(.css-1dimb7l-control) {
+    border-color: var(--primary-border-color, #ced4da);
+} */
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.85em;
+  margin-top: 0.25rem;
+}

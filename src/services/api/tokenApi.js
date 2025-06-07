@@ -61,6 +61,7 @@ const tokenApi = {
             const response = await httpClient.get(API_ENDPOINTS.TOKEN.LIST, {
                 params: filters
             });
+            console.log('response', response);
             if (response?.data?.success) {
                 return response?.data?.data;
             } else {
@@ -72,9 +73,9 @@ const tokenApi = {
         }
     },
 
-    getTokensByChainId: async (chainId) => {
+    getTokensByChainId: async (chainId, filter = {}) => {
         try {
-            const response = await httpClient.get(buildUrl(API_ENDPOINTS.TOKEN.LIST_BY_CHAIN_ID, {id: chainId}));
+            const response = await httpClient.get(buildUrl(API_ENDPOINTS.TOKEN.LIST_BY_CHAIN_ID, {id: chainId}), {params: filter});
             if (response?.data?.success) {
                 return response?.data?.data;
             } else {

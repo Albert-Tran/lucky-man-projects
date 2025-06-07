@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import tokenApi from '../../../services/api/tokenApi.js'; // Import API mới
 import walletApi from '../../../services/api/walletApi.js'; // Import API mới
-import WalletTable from '../../../components/WalletTable/WalletTable.jsx'; // Import component bảng
+import WalletTable from '../../../components/Wallet/WalletTable/WalletTable.jsx'; // Import component bảng
 import { validateRequired, composeValidators } from '../../../utils/helpers/validators.js'; // Dùng lại validator
 import pageStyles from './DetailWalletGroupPage.module.css'; // Style riêng cho trang này
 import CONFIG from '../../../utils/config/config.js';
@@ -22,6 +22,7 @@ const DetailWalletGroupPage = () => {
     const [availableTokens, setAvailableTokens] = useState([]); // Danh sách token dựa trên chain
     const [selectedToken, setSelectedToken] = useState('');
     const [walletData, setWalletData] = useState([]); // Dữ liệu số dư ví
+    const [totalBalance, setTotalBalance] = useState('');
     const [isLoadingTokens, setIsLoadingTokens] = useState(false);
     const [tokenError, setTokenError] = useState(null);
 
@@ -72,12 +73,11 @@ const DetailWalletGroupPage = () => {
                 try {
                     console.log(selectedChain);
                     const tokenResponse = await tokenApi.getTokensByChainId(selectedChain);
-                    
                     const formattedTokens = tokenResponse.tokens.map(token => ({
                         value: token.address,
                         label: `${token.token_name}`,
                     }));
-                    setAvailableTokens([{ value: '', label: 'Chọn Token' }, ...formattedTokens]);
+                    setAvailableTokens([{ value: '', label: 'Chọn Token' }, { value: 'native_token', label: 'Native Token' }, ...formattedTokens]);
                 } catch (err) {
                     console.error('Error fetching tokens:', err);
                     setTokenError(err.response?.data?.message || 'Lỗi khi tải dữ liệu. Thử lại sau');
@@ -108,11 +108,29 @@ const DetailWalletGroupPage = () => {
     setWalletError(null);
     setMessage('');
     setWalletData([]); // Xóa dữ liệu cũ trước khi tải mới
-
     try {
-      const walletResponse = await walletApi.getWallestWithTokenBalance({groupId: id, tokenAddress: selectedToken, chainId: selectedChain});
-      setWalletData(walletResponse.wallets);
-      setMessage(`Tải dữ liệu thành công của token ${selectedToken} ở ${selectedChain}.`);
+      let wallets = [];
+      if (selectedToken == 'native_token') {
+        const walletResponse = await walletApi.getWallestByGroupId(id, {chainId: selectedChain});
+        wallets = walletResponse.wallets.map(wallet => {
+            return {
+                ...wallet,
+                balance: wallet.native_balance
+            };
+        });
+        setTotalBalance(walletResponse.totalNativeBalance);
+      } else {
+        const walletResponse = await walletApi.getWallestWithTokenBalance({groupId: id, tokenAddress: selectedToken, chainId: selectedChain});
+        wallets = walletResponse.wallets.map(wallet => {
+            return {
+                ...wallet,
+                balance: wallet.tokenBalance
+            };
+        });
+        setTotalBalance(walletResponse.totalTokenBalance);
+      }
+      setWalletData(wallets);
+      setMessage(`Tải dữ liệu thành công.`);
     } catch (err) {
       console.error('Error fetching wallets:', err);
       setWalletError(err.response?.data?.message || 'Có lỗi khi tải. Thử lại sau');
@@ -194,12 +212,13 @@ const DetailWalletGroupPage = () => {
           disabled={!selectedChain || !selectedToken || isLoadingWallets}
           className={pageStyles.loadButton}
         >
-          {isLoadingWallets ? 'Loading Data...' : 'Load Data'}
+          {isLoadingWallets ? 'Đang tải dữ liệu...' : 'Tải dữ liệu'}
         </button>
       </div>
 
       <WalletTable
-        data={walletData}
+        totalBalance={totalBalance}
+        walletData={walletData}
         loading={isLoadingWallets}
         error={walletError}
       />

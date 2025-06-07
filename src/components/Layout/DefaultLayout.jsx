@@ -14,9 +14,9 @@ const DefaultLayout = () => {
       path: "/about"
     },
     {
-      label: "Hồ sơ",
+      label: "Tài Chính",
       requiresAuth: true,
-      path: "/user/profile"
+      path: "/finance"
     },
     {
       label: "Đổi MK",

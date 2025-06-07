@@ -14,6 +14,10 @@ import DetailWalletGroupPage from '../pages/Wallet/DetailWalletGroup/DetailWalle
 import CreateTokenPage from '../pages/Token/CreateToken/CreateTokenPage.jsx';
 import TokenManagerPage from '../pages/Token/TokenManager/TokenManagerPage.jsx';
 
+import FinanceManagerPage from '../pages/Finance/FinanceManager/FinanceManagerPage.jsx';
+import TransferPage from '../pages/Finance/Transfer/TransferPage.jsx';
+import ChainTransferPage from '../pages/Finance/Transfer/ChainTransferPage.jsx';
+
 import NotFoundPage from '../pages/NotFound/NotFoundPage.jsx';
 import DefaultLayout from '../components/Layout/DefaultLayout.jsx';
 import { AuthProvider } from '../contexts/auth/AuthContext.jsx';
@@ -39,12 +43,16 @@ const AppRoutes = () => {
               {/* Wallet router */}
               <Route path="wallet" element={<WalletManagerPage />} />
               <Route path="wallet/new" element={<CreateWalletPage />} />
-
               <Route path="wallet/wallet-group" element={<WalletGroupManagerPage />} />
               <Route path="wallet/wallet-group/new" element={<CreateWalletGroupPage />} />
               <Route path="wallet/wallet-group/:id" element={<DetailWalletGroupPage />} />
               <Route path="wallet/wallet-group/:id/edit" element={<EditWalletGroupPage />} />
               {/* Wallet router */}
+              {/** Blockchain router */}
+              <Route path="finance" element={<FinanceManagerPage />} />
+              <Route path="finance/transfer" element={<TransferPage />} />
+              <Route path="/finance/transfer/chain/:chainId" element={<ChainTransferPage />} />
+              {/** Blockchain router */}
             </Route>
           </Route>
 

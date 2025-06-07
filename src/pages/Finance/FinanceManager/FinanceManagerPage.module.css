@@ -1,0 +1,82 @@
+.pageContainer {
+  padding: 30px;
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.pageContainer h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 2.5em;
+}
+
+.pageContainer p {
+  color: #555;
+  font-size: 1.1em;
+  margin-bottom: 30px;
+}
+
+.buttonGrid {
+  display: grid; /* Sử dụng CSS Grid để tạo bố cục các nút */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 3 cột trên màn hình lớn, tự động xuống dòng */
+  gap: 25px; /* Khoảng cách giữa các nút */
+  margin-top: 30px;
+}
+
+.actionButton {
+  padding: 25px 20px;
+  font-size: 1.0em;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff; /* Màu xanh dương */
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1px;
+}
+
+.actionButton:hover {
+  background-color: #0056b3; /* Màu xanh đậm hơn khi hover */
+  transform: translateY(-3px); /* Hiệu ứng nhấc lên nhẹ */
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+}
+
+.actionButton:active {
+  transform: translateY(0); /* Trở lại vị trí ban đầu khi click */
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Các màu sắc khác cho các nút (tùy chọn) */
+.actionButton:nth-child(2) { /* Nút Transfer */
+  background-color: #28a745; /* Màu xanh lá */
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+.actionButton:nth-child(2):hover {
+  background-color: #218838;
+  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+}
+
+.actionButton:nth-child(3) { /* Nút Approve */
+  background-color: #ffc107; /* Màu vàng */
+  color: #333; /* Chữ màu tối cho nền vàng */
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+}
+
+.actionButton:nth-child(3):hover {
+  background-color: #e0a800;
+  box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
+}
+
+@media (max-width: 768px) {
+  .buttonGrid {
+    grid-template-columns: 1fr; /* Một cột trên màn hình nhỏ */
+  }
+}

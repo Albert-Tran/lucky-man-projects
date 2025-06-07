@@ -24,6 +24,7 @@ export const API_ENDPOINTS = {
     DETAIL: '/tokens/:address'
   },
   WALLET: {
+    GET_WALLETS_BY_GROUP_ID: '/wallets/group/:groupId',
     GET_WALLETS_WITH_TOKEN_BALANCE: '/wallets/token-balances',
     WALLET_MANAGER: '/wallets/alls',
     CREATE_NEW_WALLET: '/wallets',
@@ -35,5 +36,8 @@ export const API_ENDPOINTS = {
     GET_WALLET_GROUP_BY_ID: '/groups/:id',
     UPDATE_WALLET_GROUP: '/groups/:id',
     DELETE_WALLET_GROUP_BY_ID: '/groups/:id'
+  },
+  FINANCE: {
+    TRANSFER_NATIVE_COIN_TO_MULTIPLE: '/blockchain/transfer/native-coin/to-multiple'
   }
 };
