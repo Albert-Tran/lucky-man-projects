@@ -12,7 +12,7 @@ const SimpleSelect = ({
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      backgroundColor: isDisabled ? '#e9ecef' : '#fff',
+      backgroundColor: isDisabled ? '#eef7ff' : '#fff',
       borderColor: formErrors ? 'red' : (state.isFocused ? '#80bdff' : '#ced4da'),
       boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' : 'none',
       '&:hover': {
@@ -26,8 +26,8 @@ const SimpleSelect = ({
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? '#007bff' : state.isFocused ? '#e9ecef' : null,
-      color: state.isSelected ? 'white' : 'black',
+      backgroundColor: state.isSelected ? '#e0f2fe' : state.isFocused ? '#e9ecef' : null,
+      color: state.isSelected ? '007bff' : 'black',
     }),
   };
 

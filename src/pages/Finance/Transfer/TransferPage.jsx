@@ -16,6 +16,10 @@ const TransferPage = () => {
   const [formError, setFormError] = useState(null);
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate('/finance');
+  };
+
   const handleNext = () => {
     if (!selectedChain) {
       setFormError('Please select a blockchain.');
@@ -32,7 +36,6 @@ const TransferPage = () => {
       <div className={styles.formSection}>
         <h2>1. Select Blockchain</h2>
         <div className={styles.formGroup}>
-          <label htmlFor="chainSelect">Blockchain:</label>
           <CustomSelect
             id="chainSelect"
             options={SELECTED_CHAINS}
@@ -44,6 +47,9 @@ const TransferPage = () => {
           {formError && <p className={styles.errorMessage}>{formError}</p>}
         </div>
         <div className={styles.navigationButtons}>
+          <button onClick={handleBack} className={styles.prevButton}>
+            Previous
+          </button>
           <button
             onClick={handleNext}
             className={styles.nextButton}

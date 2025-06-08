@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import TokenSelect from '../../../components/Token/TokenSelect/TokenSelect.jsx'; // Import TokenSelect
 import styles from './TransferPage.module.css'; // Vẫn tái sử dụng CSS
 
-const ChainTransferPage = () => {
+const SelectTokenTransferPage = () => {
   const { chainId } = useParams(); // Lấy chainId từ URL
   const navigate = useNavigate();
 
@@ -32,11 +32,14 @@ const ChainTransferPage = () => {
       <div className={styles.formSection}>
         <h2>Select Token</h2>
         <div className={styles.formGroup}>
-          <label htmlFor="tokenSelect">Token:</label>
           <TokenSelect
             chainId={chainId}
+            value={selectedToken}
+            onChange={setSelectedToken}
+            placeholder="Select a token..."
+            isDisabled={false}
+            formErrors={formError}
           />
-          {formError && <p className={styles.errorMessage}>{formError}</p>}
         </div>
         
         <div className={styles.navigationButtons}>
@@ -55,4 +58,4 @@ const ChainTransferPage = () => {
   );
 };
 
-export default ChainTransferPage;
+export default SelectTokenTransferPage;

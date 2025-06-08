@@ -1,85 +1,166 @@
 /* src/pages/TransferPage.module.css */
+
 .pageContainer {
+  max-width: 800px;
+  margin: 2rem auto;
   padding: 2rem;
-  max-width: 700px; /* Giảm max-width cho trang đầu tiên */
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
+  background-color: #fff;
+  border-radius: 0.8rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  color: #344767;
 }
 
 h1 {
   text-align: center;
-  color: #333;
-  margin-bottom: 2rem;
+  color: #007bff;
+  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+h2 {
+  color: #344767;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e0e6ed;
+  padding-bottom: 0.5rem;
 }
 
 .formSection {
   background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1.8rem;
+  border-radius: 0.6rem;
+  border: 1px solid #e0e6ed;
   margin-bottom: 2rem;
 }
 
-h2 {
-  color: #007bff;
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #e9ecef;
-  padding-bottom: 0.5rem;
-}
-
 .formGroup {
-  margin-bottom: 1.5rem; /* Tăng khoảng cách dưới form group */
+  margin-bottom: 1.5rem;
 }
 
-.formGroup label {
+.label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: #495057;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  color: #344767;
+  font-size: 0.95rem;
 }
 
-/* Style cho input và select thuần HTML nếu bạn dùng */
-.formGroup select,
-.formGroup input[type="text"],
-.formGroup input[type="number"] {
+.inputField,
+.selectField,
+textarea { /* Áp dụng style cho textarea */
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #d2d6da;
+  border-radius: 0.4rem;
   font-size: 1rem;
-  box-sizing: border-box;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #495057;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-sizing: border-box; /* Quan trọng để padding không làm tăng width */
 }
 
-.formGroup select:focus,
-.formGroup input[type="text"]:focus,
-.formGroup input[type="number"]:focus {
-  border-color: #80bdff;
-  outline: 0;
+.inputField:focus,
+.selectField:focus,
+textarea:focus {
+  border-color: #007bff;
+  outline: none;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.errorMessage {
-  color: #dc3545;
-  font-size: 0.875em;
-  margin-top: 0.25rem;
+.inputField.error,
+.selectField.error,
+textarea.error {
+  border-color: #e63757;
 }
+
+.inputField.error:focus,
+.selectField.error:focus,
+textarea.error:focus {
+  box-shadow: 0 0 0 0.2rem rgba(230, 55, 87, 0.25);
+}
+
+.errorMessage {
+  color: #e63757;
+  font-size: 0.875em;
+  margin-top: 0.35rem;
+  padding-left: 0.2rem;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 1.5rem; /* Khoảng cách giữa các radio button */
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #495057;
+}
+
+.radioLabel input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #a0aec0;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  position: relative; /* Cho chấm tròn bên trong */
+}
+
+.radioLabel input[type="radio"]:checked {
+  border-color: #007bff;
+  background-color: #e0f2fe; /* Màu nền nhẹ khi chọn */
+}
+
+.radioLabel input[type="radio"]:checked::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: #007bff; /* Chấm tròn màu xanh */
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.helpText {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+  display: block; /* Đảm bảo nó là block element */
+  line-height: 1.4;
+}
+
 
 .navigationButtons {
   display: flex;
-  justify-content: flex-end; /* Căn nút Next/Previous sang phải */
-  margin-top: 2rem;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e6ed;
 }
 
-.navigationButtons button {
-  padding: 0.75rem 1.5rem;
+.prevButton,
+.nextButton {
+  padding: 0.9rem 1.8rem;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
-  margin-left: 1rem; /* Khoảng cách giữa các nút */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
 }
 
 .prevButton {
@@ -89,35 +170,86 @@ h2 {
 
 .prevButton:hover {
   background-color: #5a6268;
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.2);
+  transform: translateY(-2px);
 }
 
-.nextButton, .transferButton {
+.nextButton {
   background-color: #007bff;
   color: white;
 }
 
-.nextButton:hover, .transferButton:hover {
+.nextButton:hover {
   background-color: #0056b3;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+  transform: translateY(-2px);
 }
 
-.transferButton:disabled {
-  background-color: #a7a9ac;
-  cursor: not-allowed;
+.dynamicInputGroup {
+  margin-bottom: 1rem; /* Khoảng cách giữa các input động */
+  border-bottom: 1px dashed #e0e6ed; /* Đường kẻ phân cách nhẹ */
+  padding-bottom: 1rem;
 }
 
-/* Global React-Select overrides for formGroup for consistency */
-.formGroup :global(.react-select__control) {
-  width: 100%;
-  border-radius: 0.25rem;
+.dynamicInputGroup:last-of-type {
+  border-bottom: none; /* Không có đường kẻ ở cuối */
+  padding-bottom: 0;
+}
+
+.inputWithRemoveButton,
+.selectWithRemoveButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Khoảng cách giữa input/select và nút xóa */
+}
+
+.inputWithRemoveButton .inputField,
+.selectWithRemoveButton .customSelectContainer { /* .customSelectContainer là wrapper của WalletSelect */
+  flex-grow: 1;
+}
+
+.removeButton {
+  background-color: #e63757; /* Màu đỏ cho nút xóa */
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.5rem 0.8rem; /* Padding nhỏ hơn */
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0; /* Ngăn nút bị co lại */
+}
+
+.removeButton:hover {
+  background-color: #cc2a4a;
+  box-shadow: 0 2px 8px rgba(230, 55, 87, 0.2);
+}
+
+.addButton {
+  display: block;
+  width: auto; /* Chiều rộng tự động theo nội dung */
+  padding: 0.8rem 1.5rem;
+  margin-top: 1.5rem;
+  background-color: #28a745; /* Màu xanh lá cây cho nút thêm */
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
   font-size: 1rem;
-}
-.formGroup :global(.react-select__control--is-focused) {
-  border-color: #80bdff !important;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Text alignment for info message */
-.formSection p {
-    text-align: center;
-    margin-bottom: 1rem;
+.addButton:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+.subHeading {
+  font-size: 1.25rem;
+  color: #5a677a; /* Màu xám nhẹ nhàng */
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e6ed;
 }

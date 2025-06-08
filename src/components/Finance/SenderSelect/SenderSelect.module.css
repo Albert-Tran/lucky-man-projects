@@ -1,0 +1,71 @@
+/* src/styles/dynamicInput.module.css */
+
+.dynamicInputGroup {
+  margin-bottom: 1rem; /* Khoảng cách giữa các input động */
+  border-bottom: 1px dashed #e0e6ed; /* Đường kẻ phân cách nhẹ */
+  padding-bottom: 1rem;
+}
+
+.dynamicInputGroup:last-of-type {
+  border-bottom: none; /* Không có đường kẻ ở cuối */
+  padding-bottom: 0;
+}
+
+.inputWithRemoveButton,
+.selectWithRemoveButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Khoảng cách giữa input/select và nút xóa */
+}
+
+/* Áp dụng cho inputField trong ReceiverInput */
+.inputWithRemoveButton .inputField {
+  flex-grow: 1;
+  /* Đảm bảo style của inputField được lấy từ TransferPage.module.css */
+  /* Bạn có thể thêm các style tùy chỉnh riêng cho input này nếu cần */
+}
+
+/* Áp dụng cho customSelectContainer trong SenderSelect */
+.selectWithRemoveButton .customSelectContainer {
+  flex-grow: 1;
+  /* Đảm bảo style của customSelectContainer được lấy từ customSelect.module.css */
+  /* Bạn có thể thêm các style tùy chỉnh riêng cho select này nếu cần */
+}
+
+
+.removeButton {
+  background-color: #e63757; /* Màu đỏ cho nút xóa */
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.5rem 0.8rem; /* Padding nhỏ hơn */
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0; /* Ngăn nút bị co lại */
+}
+
+.removeButton:hover {
+  background-color: #cc2a4a;
+  box-shadow: 0 2px 8px rgba(230, 55, 87, 0.2);
+}
+
+.addButton {
+  display: block;
+  width: auto; /* Chiều rộng tự động theo nội dung */
+  padding: 0.8rem 1.5rem;
+  margin-top: 1.5rem;
+  background-color: #28a745; /* Màu xanh lá cây cho nút thêm */
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: #218838;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
