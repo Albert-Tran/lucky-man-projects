@@ -19,6 +19,8 @@ import TransferPage from '../pages/Finance/Transfer/TransferPage.jsx';
 import SelectTokenTransferPage from '../pages/Finance/Transfer/SelectTokenTransferPage.jsx';
 import SelectModeAndWalletTransferPage from '../pages/Finance/Transfer/SelectModeAndWalletTransferPage.jsx';
 
+import SwapPage from '../pages/Finance/Swap/SwapPage.jsx';
+
 import NotFoundPage from '../pages/NotFound/NotFoundPage.jsx';
 import DefaultLayout from '../components/Layout/DefaultLayout.jsx';
 import { AuthProvider } from '../contexts/auth/AuthContext.jsx';
@@ -54,6 +56,9 @@ const AppRoutes = () => {
               <Route path="finance/transfer" element={<TransferPage />} />
               <Route path="/finance/transfer/chain/:chainId" element={<SelectTokenTransferPage />} />
               <Route path="/finance/transfer/chain/:chainId/token/:tokenAddress" element={<SelectModeAndWalletTransferPage />} />
+              <Route path="finance/swap" element={<SwapPage />} />
+              <Route path="/finance/swap/chain/:chainId" element={<SelectTokenTransferPage />} />
+              <Route path="/finance/swap/chain/:chainId/token/:tokenAddress" element={<SelectModeAndWalletTransferPage />} />
               {/** Blockchain router */}
             </Route>
           </Route>
