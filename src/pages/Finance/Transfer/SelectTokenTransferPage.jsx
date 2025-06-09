@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import TokenSelect from '../../../components/Token/TokenSelect/TokenSelect.jsx'; // Import TokenSelect
 import styles from './TransferPage.module.css'; // Vẫn tái sử dụng CSS
-
+import {getChainNameById}  from '../../../utils/helpers/getConfig.js';
 const SelectTokenTransferPage = () => {
   const { chainId } = useParams();
   const navigate = useNavigate();
@@ -54,11 +54,11 @@ const SelectTokenTransferPage = () => {
     <div className={styles.pageContainer}>
       <h1>Wallet Transfer - Step 2: Select Token</h1>
       <p className={styles.summaryText}>
-        Selected Chain: <strong>{chainId ? chainId.toUpperCase() : 'N/A'}</strong>
+        Selected Chain: <strong>{getChainNameById(chainId).toUpperCase()}</strong>
       </p>
 
       <form onSubmit={handleSubmit} className={styles.formSection}>
-        <h2>1. Choose Token Type</h2>
+        <h2>Choose Token Type</h2>
         <div className={styles.radioGroup}>
           <label className={styles.radioLabel}>
             <input

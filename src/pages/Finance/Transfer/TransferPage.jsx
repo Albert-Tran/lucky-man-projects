@@ -34,7 +34,7 @@ const TransferPage = () => {
       <h1>Wallet Transfer - Step 1: Select Blockchain</h1>
 
       <div className={styles.formSection}>
-        <h2>1. Select Blockchain</h2>
+        <h2>Select Blockchain</h2>
         <div className={styles.formGroup}>
           <CustomSelect
             id="chainSelect"

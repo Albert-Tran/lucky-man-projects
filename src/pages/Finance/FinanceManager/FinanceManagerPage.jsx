@@ -11,7 +11,7 @@ const FinanceManagerPage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Quản lý tài chính</h1>
+      <h1>Thực hiện giao dịch</h1>
       <p>Chọn loại giao dịch:</p>
 
       <div className={styles.buttonGrid}>

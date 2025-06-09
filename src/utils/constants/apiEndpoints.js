@@ -38,6 +38,8 @@ export const API_ENDPOINTS = {
     DELETE_WALLET_GROUP_BY_ID: '/groups/:id'
   },
   FINANCE: {
-    TRANSFER_NATIVE_COIN_TO_MULTIPLE: '/blockchain/transfer/native-coin/to-multiple'
+    TRANSFER_NATIVE_COIN_TO_MULTIPLE: '/blockchain/transfer/native-coin/to-multiple',
+    TRANSFER_NATIVE_COIN_FROM_MULTIPLE:'/blockchain/transfer/native-coin/from-multiple',
+    TRANFER_CUSTOM_COIN_TO_MULTIPLE: '/api/blockchain/transfer/token/to-multiple'
   }
 };

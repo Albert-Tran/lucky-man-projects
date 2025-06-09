@@ -87,6 +87,20 @@ const tokenApi = {
         }
     },
 
+    getTokensByAddress: async (address, filter = {}) => {
+        try {
+            const response = await httpClient.get(buildUrl(API_ENDPOINTS.TOKEN.GET_BY_ADDRESS, {address: address}), {params: filter});
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response.data.message || 'Lay thong tin danh sach token theo chain id khong thanh cong.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Lay thong tin danh sach token theo chain id khong thanh cong.';
+            throw new Error(errorMessage);
+        }
+    },
+
     getToken: async (address) => {
         try {
             const response = await httpClient.post(API_ENDPOINTS.TOKEN.DETAIL, {address});

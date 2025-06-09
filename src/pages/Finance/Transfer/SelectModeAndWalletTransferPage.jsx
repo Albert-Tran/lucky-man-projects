@@ -6,11 +6,13 @@ import ReceiverInput from '../../../components/Finance/ReceiverInput/ReceiverInp
 import SenderSelect from '../../../components/Finance/SenderSelect/SenderSelect.jsx';   // Select cho người gửi (Many-to-One)
 import styles from './TransferPage.module.css'; // Tái sử dụng CSS
 import financeApi from '../../../services/api/financeApi.js';
+import {getChainNameById} from '../../../utils/helpers/getConfig.js';
+import tokenApi from '../../../services/api/tokenApi.js';
 
 const SelectModeAndWalletTransferPage = () => {
   const { chainId, tokenAddress } = useParams();
   const navigate = useNavigate();
-
+  const [tokenName, setTokenName] = useState('');
   const [transferMode, setTransferMode] = useState('one_to_many');
   const [oneToManySender, setOneToManySender] = useState('');
   const [manyToOneReceiver, setManyToOneReceiver] = useState('');
@@ -23,8 +25,27 @@ const SelectModeAndWalletTransferPage = () => {
 
   // THÊM STATE MỚI CHO AMOUNT
   const [amount, setAmount] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false); // State quản lý trạng thái tải
   const [formErrors, setFormErrors] = useState({});
+  const [transactionError, setTransactionError] = useState(null); // State quản lý lỗi giao dịch
+
+  useEffect(() => {
+    const fetchTokenName = async (address) => {
+      console.log('address', address)
+      try {
+        const data = await tokenApi.getTokensByAddress(address, {});
+        console.log('data', data);
+        if (data.total == 1) {
+          setTokenName(data.tokens[0].token_name || '');
+        }
+      } catch (err) {
+        setTokenName('Failed to load token name.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTokenName(tokenAddress);
+  }, []);
 
   useEffect(() => {
     if (!chainId || !tokenAddress) {
@@ -124,34 +145,84 @@ const SelectModeAndWalletTransferPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      const payload = {
-        chainId,
-        tokenAddress,
-        transferMode,
-        amount: parseFloat(amount), // Chuyển đổi amount sang số
-      };
-
-      if (transferMode === 'one_to_many') {
-        payload.senderWallet = oneToManySender;
-        payload.receiverAddresses = receivers.filter(addr => addr.trim() !== '');
-      } else if (transferMode === 'many_to_one') {
-        payload.senderWallets = senders.filter(walletId => walletId !== '');
-        payload.receiverAddress = manyToOneReceiver;
-      }
-      await financeApi.transfer(payload);
-      console.log('Final Transfer Payload:', payload);
-      alert('Transfer initiated! (Check console for details)');
-      // Thực hiện gọi API transfer thực tế ở đây
-      // navigate('/success');
+    setTransactionError(null); // Reset lỗi giao dịch trước khi thử lại
+    if (!validateForm()) {
+      return; // Dừng nếu form không hợp lệ
     }
+    setIsLoading(true);
+    const isNativeToken = tokenAddress === 'NATIVE_TOKEN';
+    const amountValue = parseFloat(amount);
+    try {
+      
+      if (isNativeToken) {
+          if (transferMode == 'one_to_many') {
+            console.log({
+              fromWalletId: oneToManySender,
+              toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
+              amount: amountValue,
+              chainId: chainId
+            });
+            // await financeApi.transferNativeCoinToMultiple({
+            //   fromWalletId: oneToManySender,
+            //   toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
+            //   amount: amountValue,
+            //   chainId: chainId
+            // });
+          } else {
+            console.log({
+              fromWalletIds: senders.filter(walletId => walletId !== ''),
+              toWalletAddress: manyToOneReceiver,
+              amount: amountValue,
+              chainId: chainId
+            });
+            // await financeApi.transferNativeCoinFromMultiple({
+            //   fromWalletIds: senders.filter(walletId => walletId !== ''),
+            //   toWalletAddress: manyToOneReceiver,
+            //   amount: amountValue,
+            //   chainId: chainId
+            // });
+          }
+      } else {
+        if (transferMode == 'one_to_many') {
+          //TODO: Approve first
+          await financeApi.transferCustomCoinToMultiple({
+            fromWalletId: oneToManySender,
+            toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
+            amount: amountValue,
+            tokenAddress: tokenAddress,
+            chainId: chainId
+          });
+        }
+      }
+      console.log("Transfer successful!");
+      alert('Transfer initiated successfully!');
+      // Điều hướng đến trang thành công hoặc hiển thị thông báo thành công
+      // navigate('/transfer-success');
+
+    } catch (err) {
+      console.error("Transfer failed:", err);
+      setTransactionError(err.message || 'An unexpected error occurred during transfer.');
+    } finally {
+      setIsLoading(false); // Kết thúc trạng thái tải
+    }
+    
   };
+
+  const displayTokenName = tokenAddress === 'NATIVE_TOKEN'
+    ? 'Native Token'
+    : (tokenAddress ? `${tokenName} (${tokenAddress.substring(0, 6)}...${tokenAddress.substring(tokenAddress.length - 4)})` : 'N/A');
 
   return (
     <div className={styles.pageContainer}>
+       {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingSpinner}></div>
+          <p>Processing transaction...</p>
+        </div>
+      )}
       <h1>Wallet Transfer - Step 3: Configure Transfer</h1>
       <p className={styles.summaryText}>
-        Chain: <strong>{chainId.toUpperCase()}</strong> | Token: <strong>{tokenAddress ? `${tokenAddress.substring(0, 6)}...${tokenAddress.substring(tokenAddress.length - 4)}` : 'N/A'}</strong>
+        Chain: <strong>{getChainNameById(chainId).toUpperCase()}</strong> | Token: <strong>{displayTokenName}</strong>
       </p>
 
       <form onSubmit={handleSubmit} className={styles.formSection}>
@@ -189,7 +260,7 @@ const SelectModeAndWalletTransferPage = () => {
                 placeholder="Select a wallet to send from..."
                 formErrors={formErrors.oneToManySender}
               />
-              {formErrors.oneToManySender && <p className={styles.errorMessage}>{formErrors.oneToManySender}</p>}
+              {/* {formErrors.oneToManySender && <p className={styles.errorMessage}>{formErrors.oneToManySender}</p>} */}
             </div>
 
             <h3 className={styles.subHeading}>Receiver Addresses</h3>
@@ -265,17 +336,23 @@ const SelectModeAndWalletTransferPage = () => {
           />
           {formErrors.amount && <p className={styles.errorMessage}>{formErrors.amount}</p>}
         </div>
-
+        {transactionError && (
+          <div className={styles.globalErrorMessage}>
+            <p>Error: {transactionError}</p>
+            <p>Please check your inputs and try again.</p>
+          </div>
+        )}
         <div className={styles.navigationButtons}>
           <button
             type="button"
             onClick={() => navigate(`/finance/transfer/chain/${chainId}`)}
             className={styles.prevButton}
+            disabled={isLoading}
           >
             Previous
           </button>
-          <button type="submit" className={styles.nextButton}>
-            Complete Transfer
+          <button type="submit" disabled={isLoading} className={styles.nextButton}>
+            {isLoading ? 'Processing...' : 'Complete Transfer'}
           </button>
         </div>
       </form>
