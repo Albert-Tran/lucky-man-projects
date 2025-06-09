@@ -1,59 +1,121 @@
 // src/pages/ChainTransferPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import TokenSelect from '../../../components/Token/TokenSelect/TokenSelect.jsx'; // Import TokenSelect
 import styles from './TransferPage.module.css'; // Vẫn tái sử dụng CSS
 
 const SelectTokenTransferPage = () => {
-  const { chainId } = useParams(); // Lấy chainId từ URL
+  const { chainId } = useParams();
   const navigate = useNavigate();
 
-  const [selectedToken, setSelectedToken] = useState('');
-  const [formError, setFormError] = useState(null);
+  const [selectedTokenAddress, setSelectedTokenAddress] = useState('');
+  const [formErrors, setFormErrors] = useState({});
 
-  const handleNext = () => {
-    if (!selectedToken) {
-      setFormError('Please select a token.');
-      return;
+  // THÊM STATE MỚI CHO LOẠI TOKEN ĐƯỢC CHỌN
+  const [tokenType, setTokenType] = useState('custom_token'); // Mặc định là 'custom_token'
+
+  // Khi component mount hoặc chainId thay đổi, reset các giá trị
+  useEffect(() => {
+    if (!chainId) {
+      navigate('/'); // Quay về trang chọn chain nếu không có chainId
     }
-    setFormError(null);
-    // Chuyển hướng đến URL mới với chainId và tokenAddress
-    navigate(`/finance/transfer/chain/${chainId}/token/${selectedToken}`);
-  };
+    setSelectedTokenAddress(''); // Reset token đã chọn
+    setFormErrors({}); // Reset lỗi
+    setTokenType('custom_token'); // Mặc định chọn Custom Token khi vào trang
+  }, [chainId, navigate]);
 
-  const handleBack = () => {
-    navigate('/finance/transfer'); // Quay lại trang chọn chain
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errors = {};
+    let isValid = true;
+
+    if (tokenType === 'custom_token') {
+      if (!selectedTokenAddress) {
+        errors.token = 'Please select a token.';
+        isValid = false;
+      }
+    }
+    // Đối với native token, không cần validation vì đã chọn loại
+    setFormErrors(errors);
+
+    if (isValid) {
+      if (tokenType === 'native_token') {
+        // Nếu là native token, chuyển hướng ngay sang bước 3 với một giá trị đặc biệt
+        // để biểu thị native token (ví dụ: 'NATIVE_TOKEN' hoặc '0x0')
+        navigate(`/finance/transfer/chain/${chainId}/token/NATIVE_TOKEN`);
+      } else {
+        // Nếu là custom token, dùng địa chỉ token đã chọn
+        navigate(`/finance/transfer/chain/${chainId}/token/${selectedTokenAddress}`);
+      }
+    }
   };
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Wallet Transfer - Step 2: Select Token for {chainId.toUpperCase()}</h1>
-      
-      <div className={styles.formSection}>
-        <h2>Select Token</h2>
-        <div className={styles.formGroup}>
-          <TokenSelect
-            chainId={chainId}
-            value={selectedToken}
-            onChange={setSelectedToken}
-            placeholder="Select a token..."
-            isDisabled={false}
-            formErrors={formError}
-          />
+      <h1>Wallet Transfer - Step 2: Select Token</h1>
+      <p className={styles.summaryText}>
+        Selected Chain: <strong>{chainId ? chainId.toUpperCase() : 'N/A'}</strong>
+      </p>
+
+      <form onSubmit={handleSubmit} className={styles.formSection}>
+        <h2>1. Choose Token Type</h2>
+        <div className={styles.radioGroup}>
+          <label className={styles.radioLabel}>
+            <input
+              type="radio"
+              value="native_token"
+              checked={tokenType === 'native_token'}
+              onChange={() => {
+                setTokenType('native_token');
+                setSelectedTokenAddress(''); // Xóa lựa chọn token cũ khi chuyển loại
+                setFormErrors({}); // Xóa lỗi
+              }}
+            />
+            Native Token (e.g., ETH, BNB)
+          </label>
+          <label className={styles.radioLabel}>
+            <input
+              type="radio"
+              value="custom_token"
+              checked={tokenType === 'custom_token'}
+              onChange={() => {
+                setTokenType('custom_token');
+                // Không xóa selectedTokenAddress ở đây nếu người dùng muốn quay lại lựa chọn cũ
+                setFormErrors({}); // Xóa lỗi
+              }}
+            />
+            Custom Token (ERC-20, etc.)
+          </label>
         </div>
-        
+
+        {/* HIỂN THỊ SELECT CUSTOM TOKEN CHỈ KHI tokenType LÀ 'custom_token' */}
+        {tokenType === 'custom_token' && (
+          <div className={styles.formGroup}>
+            <TokenSelect
+              label="Select Custom Token"
+              chainId={chainId}
+              value={selectedTokenAddress}
+              onChange={setSelectedTokenAddress}
+              placeholder="Search and select a token..."
+              formErrors={formErrors.token}
+            />
+            {/* {formErrors.token && <p className={styles.errorMessage}>{formErrors.token}</p>} */}
+          </div>
+        )}
+
         <div className={styles.navigationButtons}>
-          <button onClick={handleBack} className={styles.prevButton}>
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            className={styles.prevButton}
+          >
             Previous
           </button>
-          <button
-            onClick={handleNext}
-            className={styles.nextButton}
-          >
-            Next
+          <button type="submit" className={styles.nextButton}>
+            Next Step
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

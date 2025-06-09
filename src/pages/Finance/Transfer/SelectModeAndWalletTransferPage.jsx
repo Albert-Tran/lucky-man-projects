@@ -5,6 +5,7 @@ import WalletSelect from '../../../components/Wallet/WalletSelect/WalletSelect.j
 import ReceiverInput from '../../../components/Finance/ReceiverInput/ReceiverInput.jsx'; // Input cho người nhận (One-to-Many)
 import SenderSelect from '../../../components/Finance/SenderSelect/SenderSelect.jsx';   // Select cho người gửi (Many-to-One)
 import styles from './TransferPage.module.css'; // Tái sử dụng CSS
+import financeApi from '../../../services/api/financeApi.js';
 
 const SelectModeAndWalletTransferPage = () => {
   const { chainId, tokenAddress } = useParams();
@@ -49,8 +50,8 @@ const SelectModeAndWalletTransferPage = () => {
 
   const updateReceiverInput = (index, value) => {
     const newReceivers = [...receivers];
-    newReceavers[index] = value;
-    setReceivers(newReceavers);
+    newReceivers[index] = value;
+    setReceivers(newReceivers);
   };
 
   const addSenderSelect = () => {
@@ -121,7 +122,7 @@ const SelectModeAndWalletTransferPage = () => {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       const payload = {
@@ -138,7 +139,7 @@ const SelectModeAndWalletTransferPage = () => {
         payload.senderWallets = senders.filter(walletId => walletId !== '');
         payload.receiverAddress = manyToOneReceiver;
       }
-
+      await financeApi.transfer(payload);
       console.log('Final Transfer Payload:', payload);
       alert('Transfer initiated! (Check console for details)');
       // Thực hiện gọi API transfer thực tế ở đây
@@ -255,14 +256,12 @@ const SelectModeAndWalletTransferPage = () => {
             Amount:
           </label>
           <input
-            type="number" // Sử dụng type="number" cho input số
+            type="text" // Sử dụng type="number" cho input số
             id="transfer-amount"
             className={`${styles.inputField} ${formErrors.amount ? styles.error : ''}`}
             placeholder="Enter amount to transfer"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            step="any" // Cho phép nhập số thập phân
-            min="0" // Đảm bảo số lượng không âm
           />
           {formErrors.amount && <p className={styles.errorMessage}>{formErrors.amount}</p>}
         </div>
@@ -270,7 +269,7 @@ const SelectModeAndWalletTransferPage = () => {
         <div className={styles.navigationButtons}>
           <button
             type="button"
-            onClick={() => navigate(`/finance/transfer/chain/${chainId}/token/${tokenAddress}`)}
+            onClick={() => navigate(`/finance/transfer/chain/${chainId}`)}
             className={styles.prevButton}
           >
             Previous
