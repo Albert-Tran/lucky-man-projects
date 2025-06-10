@@ -6,8 +6,9 @@ import ReceiverInput from '../../../components/Finance/ReceiverInput/ReceiverInp
 import SenderSelect from '../../../components/Finance/SenderSelect/SenderSelect.jsx';   // Select cho người gửi (Many-to-One)
 import styles from './TransferPage.module.css'; // Tái sử dụng CSS
 import financeApi from '../../../services/api/financeApi.js';
-import {getChainNameById} from '../../../utils/helpers/getConfig.js';
+import {getChainNameById, getMultiCallContractAddressKeyByChainId} from '../../../utils/helpers/getConfig.js';
 import tokenApi from '../../../services/api/tokenApi.js';
+import configApi from '../../../services/api/configApi.js';
 
 const SelectModeAndWalletTransferPage = () => {
   const { chainId, tokenAddress } = useParams();
@@ -16,7 +17,7 @@ const SelectModeAndWalletTransferPage = () => {
   const [transferMode, setTransferMode] = useState('one_to_many');
   const [oneToManySender, setOneToManySender] = useState('');
   const [manyToOneReceiver, setManyToOneReceiver] = useState('');
-
+  const [multiCallContractAddress, setMultiCallContractAddress] = useState('');
   // Mảng các ví nhận cho One-to-Many
   const [receivers, setReceivers] = useState(['']);
 
@@ -31,13 +32,13 @@ const SelectModeAndWalletTransferPage = () => {
 
   useEffect(() => {
     const fetchTokenName = async (address) => {
-      console.log('address', address)
+      console.log('address', address);
+
       try {
         const data = await tokenApi.getTokensByAddress(address, {});
-        console.log('data', data);
-        if (data.total == 1) {
-          setTokenName(data.tokens[0].token_name || '');
-        }
+        const multiCallContractAddressRes = await configApi.getConfigByKey(getMultiCallContractAddressKeyByChainId(chainId));
+        setMultiCallContractAddress(multiCallContractAddressRes.value || '');
+        setTokenName(data?.tokens[0]?.token_name || '');
       } catch (err) {
         setTokenName('Failed to load token name.');
       } finally {
@@ -162,28 +163,31 @@ const SelectModeAndWalletTransferPage = () => {
               amount: amountValue,
               chainId: chainId
             });
-            // await financeApi.transferNativeCoinToMultiple({
-            //   fromWalletId: oneToManySender,
-            //   toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
-            //   amount: amountValue,
-            //   chainId: chainId
-            // });
+            await financeApi.transferNativeCoinToMultiple({
+              fromWalletId: oneToManySender,
+              toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
+              amount: amountValue,
+              chainId: chainId
+            });
           } else {
-            console.log({
+            await financeApi.transferNativeCoinFromMultiple({
               fromWalletIds: senders.filter(walletId => walletId !== ''),
               toWalletAddress: manyToOneReceiver,
               amount: amountValue,
               chainId: chainId
             });
-            // await financeApi.transferNativeCoinFromMultiple({
-            //   fromWalletIds: senders.filter(walletId => walletId !== ''),
-            //   toWalletAddress: manyToOneReceiver,
-            //   amount: amountValue,
-            //   chainId: chainId
-            // });
           }
       } else {
         if (transferMode == 'one_to_many') {
+          await financeApi.approveTokenSpending(
+            {
+              fromWalletId: oneToManySender,
+              tokenAddress: tokenAddress,
+              spenderAddress: multiCallContractAddress,
+              chainId: chainId
+            }
+          );
+
           //TODO: Approve first
           await financeApi.transferCustomCoinToMultiple({
             fromWalletId: oneToManySender,

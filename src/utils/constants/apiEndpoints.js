@@ -7,10 +7,13 @@ export const API_ENDPOINTS = {
     REFRESH: '/auth/refresh-token',
     ME: '/auth/me'
   },
+  CONFIG: {
+    GET_CONFIG_BY_KEY: '/configs/key/:key'
+  },
   USERS: {
     LIST: '/users',
     DETAIL: '/users/:id',
-    CHANGE_PASSWORD: '/api/auth/change-password'
+    CHANGE_PASSWORD: '/auth/change-password'
   },
   TOKEN: {
     CREATE: '/tokens',
@@ -40,6 +43,7 @@ export const API_ENDPOINTS = {
   FINANCE: {
     TRANSFER_NATIVE_COIN_TO_MULTIPLE: '/blockchain/transfer/native-coin/to-multiple',
     TRANSFER_NATIVE_COIN_FROM_MULTIPLE:'/blockchain/transfer/native-coin/from-multiple',
-    TRANFER_CUSTOM_COIN_TO_MULTIPLE: '/api/blockchain/transfer/token/to-multiple'
+    TRANFER_CUSTOM_COIN_TO_MULTIPLE: '/blockchain/transfer/token/to-multiple',
+    APPROVE_TOKEN_SPENDING: '/blockchain/approve-token-spending'
   }
 };

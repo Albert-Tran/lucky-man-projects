@@ -45,6 +45,20 @@ const financeApi = {
             throw new Error(errorMessage);
         }
     },
+
+    approveTokenSpending : async (data) => {
+        try {
+            const response = await httpClient.post(API_ENDPOINTS.FINANCE.APPROVE_TOKEN_SPENDING, data);
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Tao token khong thanh cong.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Tao token khong thanh cong.';
+            throw new Error(errorMessage);
+        }
+    }
     
 };
 

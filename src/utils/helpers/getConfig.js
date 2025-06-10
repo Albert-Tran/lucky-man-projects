@@ -6,3 +6,7 @@ export const getChainNameById = (chainId) => {
     const chain = SUPPORTED_CHAINS.find(chain => chain.value == chainId);
     return chain ? chain.label : 'Chain không tồn tại ';
 };
+
+export const getMultiCallContractAddressKeyByChainId = (chainId) => {
+    return `multicall_contract_address_${chainId}`;
+}
