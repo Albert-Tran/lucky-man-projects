@@ -106,7 +106,7 @@ const SelectTokenTransferPage = () => {
         <div className={styles.navigationButtons}>
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/finance/transfer')}
             className={styles.prevButton}
           >
             Previous

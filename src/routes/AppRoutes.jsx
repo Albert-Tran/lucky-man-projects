@@ -20,6 +20,8 @@ import SelectTokenTransferPage from '../pages/Finance/Transfer/SelectTokenTransf
 import SelectModeAndWalletTransferPage from '../pages/Finance/Transfer/SelectModeAndWalletTransferPage.jsx';
 
 import SwapPage from '../pages/Finance/Swap/SwapPage.jsx';
+import SelectModeAndTokenSwapPage from '../pages/Finance/Swap/SelectModeAndTokenSwapPage.jsx';
+import SelectWalletAndAmountSwapPage from '../pages/Finance/Swap/SelectWalletAndAmountSwapPage.jsx';
 
 import NotFoundPage from '../pages/NotFound/NotFoundPage.jsx';
 import DefaultLayout from '../components/Layout/DefaultLayout.jsx';
@@ -57,8 +59,8 @@ const AppRoutes = () => {
               <Route path="/finance/transfer/chain/:chainId" element={<SelectTokenTransferPage />} />
               <Route path="/finance/transfer/chain/:chainId/token/:tokenAddress" element={<SelectModeAndWalletTransferPage />} />
               <Route path="finance/swap" element={<SwapPage />} />
-              <Route path="/finance/swap/chain/:chainId" element={<SelectTokenTransferPage />} />
-              <Route path="/finance/swap/chain/:chainId/token/:tokenAddress" element={<SelectModeAndWalletTransferPage />} />
+              <Route path="/finance/swap/chain/:chainId" element={<SelectModeAndTokenSwapPage />} />
+              <Route path="/finance/swap/chain/:chainId/mode/:mode/token/:tokenAddress" element={<SelectWalletAndAmountSwapPage />} />
               {/** Blockchain router */}
             </Route>
           </Route>

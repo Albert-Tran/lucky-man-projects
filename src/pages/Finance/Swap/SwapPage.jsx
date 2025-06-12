@@ -26,12 +26,12 @@ const SwapPage = () => {
       return;
     }
     setFormError(null);
-    navigate(`/finance/transfer/chain/${selectedChain}`);
+    navigate(`/finance/swap/chain/${selectedChain}`);
   };
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Wallet Transfer - Step 1: Select Blockchain</h1>
+      <h1>Wallet Swap - Step 1: Select Blockchain</h1>
 
       <div className={styles.formSection}>
         <h2>Select Blockchain</h2>
