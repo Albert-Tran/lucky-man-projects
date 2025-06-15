@@ -27,6 +27,7 @@ import NotFoundPage from '../pages/NotFound/NotFoundPage.jsx';
 import DefaultLayout from '../components/Layout/DefaultLayout.jsx';
 import { AuthProvider } from '../contexts/auth/AuthContext.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
+import SuccessPage from '../pages/Finance/Success/SuccessPage.jsx';
 
 const AppRoutes = () => {
   return (
@@ -61,6 +62,7 @@ const AppRoutes = () => {
               <Route path="finance/swap" element={<SwapPage />} />
               <Route path="/finance/swap/chain/:chainId" element={<SelectModeAndTokenSwapPage />} />
               <Route path="/finance/swap/chain/:chainId/mode/:mode/token/:tokenAddress" element={<SelectWalletAndAmountSwapPage />} />
+              <Route path="/finance/success" element={<SuccessPage />} />
               {/** Blockchain router */}
             </Route>
           </Route>

@@ -147,7 +147,7 @@ const SelectWalletAndAmountSwapPage = () => {
                 alert('Native to Token swap initiated successfully!');
             }
             // Điều hướng đến trang thành công hoặc hiển thị thông báo thành công
-            // navigate('/swap-success');
+            navigate('/finance/success');
 
         } catch (err) {
             console.error("Swap failed:", err);

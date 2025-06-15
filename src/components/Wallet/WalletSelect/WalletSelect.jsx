@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './WalletSelect.module.css'; // Sử dụng lại CSS Modules
 import walletApi from '../../../services/api/walletApi.js'; // API của bạn
+import CONFIG from '../../../utils/config/config.js';
 
 // Icon mũi tên xuống
 const ChevronDownIcon = () => (
@@ -10,7 +11,7 @@ const ChevronDownIcon = () => (
   </svg>
 );
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = CONFIG[import.meta.env.VITE_MODE].ITEMS_PER_PAGE_IN_SELECT_FIELD;
 
 const WalletSelect = ({
   value,   // Giá trị ví hiện tại được chọn (e.g., wallet address)

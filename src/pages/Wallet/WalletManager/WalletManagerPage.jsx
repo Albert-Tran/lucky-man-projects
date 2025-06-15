@@ -288,7 +288,8 @@ const WalletManagerPage = () => {
                         rel="noopener noreferrer"
                         className={styles.addressLink}
                         >
-                        {wallet.address?.substring(0, 6)}...{wallet.address?.substring(wallet.address.length - 4)}
+                          {wallet.address}
+                        {/* {wallet.address?.substring(0, 6)}...{wallet.address?.substring(wallet.address.length - 4)} */}
                         </a>
                     </td>
                     <td>{getWalletGroupNameById(wallet.group_id)}</td>

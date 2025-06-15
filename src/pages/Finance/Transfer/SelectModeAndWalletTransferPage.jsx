@@ -194,14 +194,14 @@ const SelectModeAndWalletTransferPage = () => {
             toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
             amount: amountValue,
             tokenAddress: tokenAddress,
-            chainId: chainId
+            chainId: parseInt(chainId)
           });
         }
       }
       console.log("Transfer successful!");
       alert('Transfer initiated successfully!');
       // Điều hướng đến trang thành công hoặc hiển thị thông báo thành công
-      // navigate('/transfer-success');
+      navigate('/finance/success');
 
     } catch (err) {
       console.error("Transfer failed:", err);

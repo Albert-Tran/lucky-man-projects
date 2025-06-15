@@ -15,7 +15,7 @@ const CONFIG = {
             1: 'https://etherscan.io/',
             8453: 'https://basescan.org/'
         },
-        ITEMS_PER_PAGE_IN_SELECT_FIELD: 2
+        ITEMS_PER_PAGE_IN_SELECT_FIELD: 50
     },
     DEVELOPER: {
         API_BASE_URL: "http://3.76.45.112:5000/api",
@@ -33,7 +33,7 @@ const CONFIG = {
             1: 'https://etherscan.io/',
             8453: 'https://basescan.org/'
         },
-        ITEMS_PER_PAGE_IN_SELECT_FIELD: 2
+        ITEMS_PER_PAGE_IN_SELECT_FIELD: 50
     }
 };
 

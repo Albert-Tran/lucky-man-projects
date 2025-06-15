@@ -21,8 +21,8 @@ const FinanceManagerPage = () => {
         <button className={styles.actionButton} onClick={() => handleNavigate('/finance/transfer')}>
           Transfer
         </button>
-        <button className={styles.actionButton} onClick={() => handleNavigate('/finance/approve')}>
-          Approve
+        <button className={styles.actionButton} onClick={() => handleNavigate('/finance/success')}>
+          Random Swap
         </button>
       </div>
     </div>

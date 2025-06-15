@@ -19,11 +19,6 @@ const DefaultLayout = () => {
       path: "/finance"
     },
     {
-      label: "Đổi MK",
-      requiresAuth: true,
-      path: "/user/change-password"
-    },
-    {
       label: "Ví",
       requiresAuth: true,
       path: "/wallet"
@@ -37,7 +32,12 @@ const DefaultLayout = () => {
       label: "Nhóm ví",
       requiresAuth: true,
       path: "/wallet/wallet-group"
-    }
+    },
+    {
+      label: "Đổi mật khẩu",
+      requiresAuth: true,
+      path: "/user/change-password"
+    },
   ];
   return (
     <div className={styles.layoutContainer}>
