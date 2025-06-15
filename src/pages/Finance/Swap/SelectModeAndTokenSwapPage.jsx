@@ -45,9 +45,11 @@ const SelectModeAndTokenSwapPage = () => {
     }
 
     setFormErrors(errors);
-
+    console.log('SelectModeAndTokenSwapPage::handleSubmit');
+    
     if (isValid) {
       // Navigate to the final step with chainId, swapMode, and selectedTokenAddress
+      console.log('SelectModeAndTokenSwapPage::handleSubmit:isValid');
       navigate(`/finance/swap/chain/${chainId}/mode/${swapMode}/token/${selectedTokenAddress}`);
     }
   };

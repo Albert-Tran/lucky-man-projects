@@ -10,3 +10,8 @@ export const getChainNameById = (chainId) => {
 export const getMultiCallContractAddressKeyByChainId = (chainId) => {
     return `multicall_contract_address_${chainId}`;
 }
+
+export const getNativeTokenAddressByChainId = (chainId) => {
+    const chain = SUPPORTED_CHAINS.find(chain => chain.value == chainId);
+    return chain.native_token_address;
+}

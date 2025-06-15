@@ -44,6 +44,8 @@ export const API_ENDPOINTS = {
     TRANSFER_NATIVE_COIN_TO_MULTIPLE: '/blockchain/transfer/native-coin/to-multiple',
     TRANSFER_NATIVE_COIN_FROM_MULTIPLE:'/blockchain/transfer/native-coin/from-multiple',
     TRANFER_CUSTOM_COIN_TO_MULTIPLE: '/blockchain/transfer/token/to-multiple',
-    APPROVE_TOKEN_SPENDING: '/blockchain/approve-token-spending'
+    APPROVE_TOKEN_SPENDING: '/blockchain/approve-token-spending',
+    SWAP_MULTI_NATIVE_TO_TOKENS: '/blockchain/swap/multi-native-to-tokens',
+    SWAP_MULTI_TOKENS_TO_NATIVE: '/blockchain/swap/multi-tokens-to-native'
   }
 };

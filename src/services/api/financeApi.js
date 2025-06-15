@@ -58,7 +58,35 @@ const financeApi = {
             const errorMessage = error.response?.data?.message || error.message || 'Tao token khong thanh cong.';
             throw new Error(errorMessage);
         }
-    }
+    },
+
+    swapNativeToTokens: async (data) => {
+        try {
+            const response = await httpClient.post(API_ENDPOINTS.FINANCE.SWAP_MULTI_NATIVE_TO_TOKENS, data);
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Tao token khong thanh cong.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Tao token khong thanh cong.';
+            throw new Error(errorMessage);
+        }
+    },
+
+    swapTokensToNative: async (data) => {
+        try {
+            const response = await httpClient.post(API_ENDPOINTS.FINANCE.SWAP_MULTI_TOKENS_TO_NATIVE, data);
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Tao token khong thanh cong.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Tao token khong thanh cong.';
+            throw new Error(errorMessage);
+        }
+    },
     
 };
 
