@@ -13,7 +13,7 @@ const FeatureCard = ({ title, description, icon, linkTo }) => (
 const HomePage = () => {
   return (
     <div className={styles.dashboardContainer}>
-      <h1 className={styles.dashboardTitle}>Chào mừng đến với Bảng điều khiển Admin</h1>
+      <h1 className={styles.dashboardTitle}>Chào mừng đến với bảng điều khiển</h1>
       <p className={styles.dashboardSubtitle}>Quản lý hệ thống của bạn một cách dễ dàng và hiệu quả.</p>
 
       <div className={styles.featuresGrid}>

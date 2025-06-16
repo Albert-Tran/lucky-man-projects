@@ -10,6 +10,22 @@ const RPC_URLS = CONFIG[import.meta.env.VITE_MODE].RPC_URLS;
 const BLOCKCHAIN_EXPLORER_URLS = CONFIG[import.meta.env.VITE_MODE].BLOCKCHAIN_EXPLORER_URLS;
 const SUPPORTED_CHAINS = CONFIG[import.meta.env.VITE_MODE].SUPPORTED_CHAINS
 
+const getProviderByChain = async (chainId) => {
+  const rpcUrl = RPC_URLS[chainId];
+
+  if (!rpcUrl) {
+    throw new Error(`Chain "${chainId}" không được hỗ trợ hoặc cấu hình RPC.`);
+  }
+
+  try {
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    return provider;
+  } catch (error) {
+    let userMessage = 'Không thể lấy thông tin on-chain.';
+    throw new Error(userMessage);
+  }
+}
+
 /**
  * Lấy thông tin token (name, symbol, decimals) trực tiếp từ blockchain.
  * @param {string} address - Địa chỉ contract của token (ví dụ: '0x...').
@@ -43,7 +59,7 @@ export const fetchTokenOnChainInfo = async (address, chainId) => {
 
     return { name, symbol, decimals: Number(decimals) }; // Chuyển decimals về số nguyên
   } catch (error) {
-    console.error(`Lỗi khi lấy thông tin on-chain cho ${address} trên ${chainName}:`, error);
+    console.error(`Lỗi khi lấy thông tin on-chain cho ${address} trên ${chainId}:`, error);
     // Cung cấp thông báo lỗi rõ ràng hơn cho người dùng
     let userMessage = 'Không thể lấy thông tin token on-chain. Vui lòng kiểm tra địa chỉ contract và chain.';
     if (error.reason && error.reason.includes('code=CALL_EXCEPTION')) {
@@ -65,4 +81,37 @@ export const getTokenAddressUrls = (chainId, address) => {
 export const getChainNameById = (chainId) => {
   const chain = SUPPORTED_CHAINS.find(chain => chain.value === chainId);
   return chain ? chain.label : undefined;
+}
+
+export const getTokenAmountAllowance = async (tokenAddress, chainId, ownerAddress, spenderAddress) => {
+  if (!ethers.isAddress(tokenAddress)) { // Sử dụng ethers.isAddress để kiểm tra địa chỉ hợp lệ
+    throw new Error(`Địa chỉ contract "${tokenAddress}" không hợp lệ.`);
+  }
+  try {
+    const provider = await getProviderByChain(chainId);
+    const network = await provider.getNetwork();
+    if (network.name !== chainId) {
+        console.warn(`Provider cho ${chainId} đang kết nối tới mạng ${network.name}.`);
+    }
+
+    const contract = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
+    const allowanceAmountWei = await contract.allowance(ownerAddress, spenderAddress);
+    const decimals = await contract.decimals();
+    const allowanceAmountReadable = ethers.formatUnits(allowanceAmountWei, decimals); // <--- Sử dụng hàm này
+
+    return { allowanceAmountWei, allowanceAmountReadable };
+  } catch (error) {
+    console.error(`Lỗi khi lấy thông tin on-chain cho ${tokenAddress} trên ${chainId}:`, error);
+    // Cung cấp thông báo lỗi rõ ràng hơn cho người dùng
+    let userMessage = 'Không thể lấy thông tin token on-chain. Vui lòng kiểm tra địa chỉ contract và chain.';
+    if (error.reason && error.reason.includes('code=CALL_EXCEPTION')) {
+      userMessage = 'Địa chỉ contract không phải là token hoặc không tồn tại trên chain này.';
+    } else if (error.code === 'NETWORK_ERROR') {
+      userMessage = 'Lỗi kết nối mạng hoặc RPC. Vui lòng thử lại sau.';
+    } else if (error.message.includes('insufficient funds for gas')) {
+      // Lỗi này thường không xảy ra với view function, nhưng là ví dụ
+      userMessage = 'Lỗi phí gas (không liên quan đến hàm view).';
+    }
+    throw new Error(userMessage);
+  }
 }

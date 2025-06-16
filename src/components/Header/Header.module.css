@@ -22,7 +22,9 @@
   font-weight: bold;
 }
 
-.nav {}
+.nav {
+  align-items: center;
+}
 
 .navList {
   list-style: none;
@@ -30,6 +32,7 @@
   padding: 0;
   display: flex;
   gap: 25px; /* Khoảng cách giữa các mục nav */
+  align-items: center;
 }
 
 .navItem {}

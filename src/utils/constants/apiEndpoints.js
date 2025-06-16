@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
     DETAIL: '/tokens/:address'
   },
   WALLET: {
+    GET_WALLET_BY_ID: '/wallets',
     GET_WALLETS_BY_GROUP_ID: '/wallets/group/:groupId',
     GET_WALLETS_WITH_TOKEN_BALANCE: '/wallets/token-balances',
     WALLET_MANAGER: '/wallets/alls',

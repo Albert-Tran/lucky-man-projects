@@ -1,5 +1,6 @@
 // src/pages/TransferFinalStepPage.jsx
 import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import { useParams, useNavigate } from 'react-router-dom';
 import WalletSelect from '../../../components/Wallet/WalletSelect/WalletSelect.jsx'; // Component chọn ví (cho sender mặc định 1-Many)
 import ReceiverInput from '../../../components/Finance/ReceiverInput/ReceiverInput.jsx'; // Input cho người nhận (One-to-Many)
@@ -10,6 +11,8 @@ import {getChainNameById, getMultiCallContractAddressKeyByChainId} from '../../.
 import { formatPriceWithDecimals } from '../../../utils/helpers/pricingFormatter.js';
 import tokenApi from '../../../services/api/tokenApi.js';
 import configApi from '../../../services/api/configApi.js';
+import walletApi from '../../../services/api/walletApi.js';
+import {getTokenAmountAllowance} from '../../../services/blockchain/evm/tokenFetcher.js';
 
 const SelectModeAndWalletTransferPage = () => {
   const { chainId, tokenAddress } = useParams();
@@ -22,6 +25,8 @@ const SelectModeAndWalletTransferPage = () => {
   const [multiCallContractAddress, setMultiCallContractAddress] = useState('');
   // Mảng các ví nhận cho One-to-Many
   const [receivers, setReceivers] = useState(['']);
+  const [approvedTokenAmount, setApprovedTokenAmount] = useState(0);
+  const [isTransferable, setIsTransferable] = useState(false);
 
   // Mảng các ví gửi cho Many-to-One
   const [senders, setSenders] = useState(['']);
@@ -41,12 +46,15 @@ const SelectModeAndWalletTransferPage = () => {
           setTokenName(`Native Token`);
           setTokenDecimals(18); // Giả sử native token có 18 chữ số thập phân
           setMultiCallContractAddress('');
+          setApprovedTokenAmount(0);
+          setIsTransferable(true);
         } else {
           const data = await tokenApi.getTokensByAddress(address, {});
           const multiCallContractAddressRes = await configApi.getConfigByKey(getMultiCallContractAddressKeyByChainId(chainId));
           setMultiCallContractAddress(multiCallContractAddressRes.value || '');
           setTokenName(data?.tokens[0]?.token_name || '');
           setTokenDecimals(data?.tokens[0]?.decimals || 0);
+          setIsTransferable(false);
         }
       } catch (err) {
         setTokenName('Failed to load token name.');
@@ -154,9 +162,54 @@ const SelectModeAndWalletTransferPage = () => {
     return isValid;
   };
 
+  const canTransfer = async (amountToCompare, allowanceAmountWei) => {
+    try {
+        const amountToCompareWei = ethers.parseUnits(amountToCompare.toString(), tokenDecimals);
+        const isUnlimitedApproval = allowanceAmountWei.toString() === ethers.MaxUint256.toString();
+        if (isUnlimitedApproval) {
+            console.log(`[DEBUG] Unlimited Approval detected. Allowance is always sufficient.`);
+            return true; // Không lớn hơn, vì đã là unlimited
+        }
+        console.log('allowanceAmountWei.lt(amountToCompareWei)', allowanceAmountWei.lt(amountToCompareWei));
+        if (allowanceAmountWei.lt(amountToCompareWei)) {
+          return true;
+        } else {
+          return false;
+        }
+    } catch (error) {
+        console.error(`Lỗi khi kiểm tra allowance: ${error.message}`);
+        // Trong trường hợp lỗi, có thể bạn muốn trả về false hoặc ném lỗi tùy thuộc vào logic ứng dụng.
+        // Trả về false để chỉ ra rằng không đủ allowance do lỗi.
+        return false;
+    }
+  }
+
+  const handleApprove = async () => {
+    setIsLoading(true);
+    const amountValue = parseFloat(amount);
+    const senderWalletData = await walletApi.getWalletById(oneToManySender, chainId);
+    const senderAddress = senderWalletData.address;
+    const tokenAmountAllowance = await getTokenAmountAllowance(tokenAddress, chainId, senderAddress, multiCallContractAddress);
+    const isTransferableTmp = await canTransfer(amountValue, tokenAmountAllowance.allowanceAmountWei);
+    if (!isTransferableTmp) {
+      await financeApi.approveTokenSpending(
+        {
+          fromWalletId: oneToManySender,
+          tokenAddress: tokenAddress,
+          spenderAddress: multiCallContractAddress,
+          chainId: chainId
+        }
+      );
+      setIsTransferable(true);
+    } else {
+      setIsTransferable(true);
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setTransactionError(null); // Reset lỗi giao dịch trước khi thử lại
+  
     if (!validateForm()) {
       return; // Dừng nếu form không hợp lệ
     }
@@ -164,7 +217,6 @@ const SelectModeAndWalletTransferPage = () => {
     const isNativeToken = tokenAddress === 'NATIVE_TOKEN';
     const amountValue = parseFloat(amount);
     try {
-      
       if (isNativeToken) {
           if (transferMode == 'one_to_many') {
             console.log({
@@ -189,29 +241,33 @@ const SelectModeAndWalletTransferPage = () => {
           }
       } else {
         if (transferMode == 'one_to_many') {
-          await financeApi.approveTokenSpending(
-            {
+          const senderWalletData = await walletApi.getWalletById(oneToManySender, chainId);
+          const senderAddress = senderWalletData.address;
+          const tokenAmountAllowance = await getTokenAmountAllowance(tokenAddress, chainId, senderAddress, multiCallContractAddress);
+          const isTransferableTmp = await canTransfer(amountValue, tokenAmountAllowance.allowanceAmountWei);
+          console.log('amountValue, tokenAmountAllowance.allowanceAmountWei', amountValue, tokenAmountAllowance.allowanceAmountWei);
+          console.log('isTransferableTmp', isTransferableTmp);
+          if (!isTransferableTmp) {
+            console.log('Chua approve');
+          } else {
+            await financeApi.transferCustomCoinToMultiple({
               fromWalletId: oneToManySender,
+              toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
+              amount: formatPriceWithDecimals(amountValue.toString(), tokenDecimals),
               tokenAddress: tokenAddress,
-              spenderAddress: multiCallContractAddress,
-              chainId: chainId
-            }
-          );
+              chainId: parseInt(chainId)
+            });
+          }
+          // 
 
-          //TODO: Approve first
-          console.log(tokenDecimals);
-          await financeApi.transferCustomCoinToMultiple({
-            fromWalletId: oneToManySender,
-            toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
-            amount: formatPriceWithDecimals(amountValue.toString(), tokenDecimals),
-            tokenAddress: tokenAddress,
-            chainId: parseInt(chainId)
-          });
+          // //TODO: Approve first
+          // console.log(tokenDecimals);
+         
         }
       }
       console.log("Transfer successful!");
       // Điều hướng đến trang thành công hoặc hiển thị thông báo thành công
-      navigate('/finance/success');
+      // navigate('/finance/success');
 
     } catch (err) {
       console.error("Transfer failed:", err);
@@ -365,9 +421,17 @@ const SelectModeAndWalletTransferPage = () => {
           >
             Previous
           </button>
-          <button type="submit" disabled={isLoading} className={styles.nextButton}>
+          {!isTransferable && (
+            <button type="button" disabled={isLoading} onClick={handleApprove} className={styles.nextButton}>
+              {isLoading ? 'Approving...' : 'Approve'}
+            </button>
+          )}
+          {isTransferable && (
+            <button type="submit" disabled={isLoading} className={styles.nextButton}>
             {isLoading ? 'Processing...' : 'Complete Transfer'}
           </button>
+          )}
+          
         </div>
       </form>
     </div>

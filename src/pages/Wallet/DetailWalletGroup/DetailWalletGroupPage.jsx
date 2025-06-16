@@ -111,7 +111,7 @@ const DetailWalletGroupPage = () => {
     try {
       let wallets = [];
       if (selectedToken == 'native_token') {
-        const walletResponse = await walletApi.getWallestByGroupId(id, {chainId: selectedChain});
+        const walletResponse = await walletApi.getWalletsByGroupId(id, {chainId: selectedChain});
         wallets = walletResponse.wallets.map(wallet => {
             return {
                 ...wallet,
@@ -120,7 +120,7 @@ const DetailWalletGroupPage = () => {
         });
         setTotalBalance(walletResponse.totalNativeBalance);
       } else {
-        const walletResponse = await walletApi.getWallestWithTokenBalance({groupId: id, tokenAddress: selectedToken, chainId: selectedChain});
+        const walletResponse = await walletApi.getWalletsWithTokenBalance({groupId: id, tokenAddress: selectedToken, chainId: selectedChain});
         wallets = walletResponse.wallets.map(wallet => {
             return {
                 ...wallet,

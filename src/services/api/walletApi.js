@@ -3,7 +3,23 @@ import { API_ENDPOINTS } from '../../utils/constants/apiEndpoints';
 import {buildUrl} from '../../utils/helpers/urlBuilder.js';
 
 const walletApi = {
-    getWallestByGroupId: async (groupId, filter) => {
+    getWalletById: async (id, chainId) => {
+        try {
+            const response = await httpClient.get(API_ENDPOINTS.WALLET.GET_WALLET_BY_ID, {
+                params: {id, chainId}
+            } );
+            if (response?.data?.success) {
+                return response?.data?.data;
+            } else {
+                throw new Error(response?.data?.message || 'Lấy danh sách ví không thành công.');
+            }
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || error.message || 'Đã xảy ra lỗi khi lấy thông tin người dùng.';
+            throw new Error(errorMessage);
+        }
+    },
+
+    getWalletsByGroupId: async (groupId, filter) => {
         try {
             const response = await httpClient.get(buildUrl(API_ENDPOINTS.WALLET.GET_WALLETS_BY_GROUP_ID, {groupId: groupId}), {
                 params: filter // Truyền tham số phân trang qua query params
@@ -19,7 +35,7 @@ const walletApi = {
         }
     },
 
-    getWallestWithTokenBalance: async (filter) => {
+    getWalletsWithTokenBalance: async (filter) => {
         try {
             const response = await httpClient.get(API_ENDPOINTS.WALLET.GET_WALLETS_WITH_TOKEN_BALANCE, {
                 params: filter // Truyền tham số phân trang qua query params
