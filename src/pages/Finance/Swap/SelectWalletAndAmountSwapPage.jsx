@@ -144,7 +144,7 @@ const SelectWalletAndAmountSwapPage = () => {
                     ],
                     chainId
                 });
-                alert('Native to Token swap initiated successfully!');
+                // alert('Native to Token swap initiated successfully!');
             }
             // Điều hướng đến trang thành công hoặc hiển thị thông báo thành công
             navigate('/finance/success');

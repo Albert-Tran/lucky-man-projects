@@ -5,7 +5,7 @@ const CONFIG = {
         ITEMS_PER_PAGE_OPTIONS: [6, 9, 12],
         SUPPORTED_CHAINS: [
             { value: 1, label: 'Ethereum', native_token_address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' },
-            { value: 8453, label: 'Base', native_token_address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' }
+            { value: 8453, label: 'Base', native_token_address: '0x4200000000000000000000000000000000000006' }
         ],
         RPC_URLS: {
             1: 'https://1.rpc.thirdweb.com',
@@ -23,7 +23,7 @@ const CONFIG = {
         ITEMS_PER_PAGE_OPTIONS: [6, 9, 12],
         SUPPORTED_CHAINS: [
             { value: 1, label: 'Ethereum', native_token_address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' },
-            { value: 8453, label: 'Base', native_token_address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' }
+            { value: 8453, label: 'Base', native_token_address: '0x4200000000000000000000000000000000000006' }
         ],
         RPC_URLS: {
             1: 'https://1.rpc.thirdweb.com',

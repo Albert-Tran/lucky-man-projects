@@ -7,6 +7,7 @@ import SenderSelect from '../../../components/Finance/SenderSelect/SenderSelect.
 import styles from './TransferPage.module.css'; // Tái sử dụng CSS
 import financeApi from '../../../services/api/financeApi.js';
 import {getChainNameById, getMultiCallContractAddressKeyByChainId} from '../../../utils/helpers/getConfig.js';
+import { formatPriceWithDecimals } from '../../../utils/helpers/pricingFormatter.js';
 import tokenApi from '../../../services/api/tokenApi.js';
 import configApi from '../../../services/api/configApi.js';
 
@@ -14,6 +15,7 @@ const SelectModeAndWalletTransferPage = () => {
   const { chainId, tokenAddress } = useParams();
   const navigate = useNavigate();
   const [tokenName, setTokenName] = useState('');
+  const [tokenDecimals, setTokenDecimals] = useState(0);
   const [transferMode, setTransferMode] = useState('one_to_many');
   const [oneToManySender, setOneToManySender] = useState('');
   const [manyToOneReceiver, setManyToOneReceiver] = useState('');
@@ -35,12 +37,20 @@ const SelectModeAndWalletTransferPage = () => {
       console.log('address', address);
 
       try {
-        const data = await tokenApi.getTokensByAddress(address, {});
-        const multiCallContractAddressRes = await configApi.getConfigByKey(getMultiCallContractAddressKeyByChainId(chainId));
-        setMultiCallContractAddress(multiCallContractAddressRes.value || '');
-        setTokenName(data?.tokens[0]?.token_name || '');
+        if (address === 'NATIVE_TOKEN') {
+          setTokenName(`Native Token`);
+          setTokenDecimals(18); // Giả sử native token có 18 chữ số thập phân
+          setMultiCallContractAddress('');
+        } else {
+          const data = await tokenApi.getTokensByAddress(address, {});
+          const multiCallContractAddressRes = await configApi.getConfigByKey(getMultiCallContractAddressKeyByChainId(chainId));
+          setMultiCallContractAddress(multiCallContractAddressRes.value || '');
+          setTokenName(data?.tokens[0]?.token_name || '');
+          setTokenDecimals(data?.tokens[0]?.decimals || 0);
+        }
       } catch (err) {
         setTokenName('Failed to load token name.');
+        setTokenDecimals(0);
       } finally {
         setIsLoading(false);
       }
@@ -50,7 +60,7 @@ const SelectModeAndWalletTransferPage = () => {
 
   useEffect(() => {
     if (!chainId || !tokenAddress) {
-      navigate('/');
+      navigate('/finance/transfer');
     }
     setFormErrors({});
     // Reset amount khi chuyển mode hoặc khởi tạo trang
@@ -166,7 +176,7 @@ const SelectModeAndWalletTransferPage = () => {
             await financeApi.transferNativeCoinToMultiple({
               fromWalletId: oneToManySender,
               toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
-              amount: amountValue,
+              amount: amountValue.toString(),
               chainId: chainId
             });
           } else {
@@ -189,17 +199,17 @@ const SelectModeAndWalletTransferPage = () => {
           );
 
           //TODO: Approve first
+          console.log(tokenDecimals);
           await financeApi.transferCustomCoinToMultiple({
             fromWalletId: oneToManySender,
             toWalletAddresses: receivers.filter(addr => addr.trim() !== ''),
-            amount: amountValue,
+            amount: formatPriceWithDecimals(amountValue.toString(), tokenDecimals),
             tokenAddress: tokenAddress,
             chainId: parseInt(chainId)
           });
         }
       }
       console.log("Transfer successful!");
-      alert('Transfer initiated successfully!');
       // Điều hướng đến trang thành công hoặc hiển thị thông báo thành công
       navigate('/finance/success');
 
@@ -213,7 +223,7 @@ const SelectModeAndWalletTransferPage = () => {
   };
 
   const displayTokenName = tokenAddress === 'NATIVE_TOKEN'
-    ? 'Native Token'
+    ? tokenName
     : (tokenAddress ? `${tokenName} (${tokenAddress.substring(0, 6)}...${tokenAddress.substring(tokenAddress.length - 4)})` : 'N/A');
 
   return (
