@@ -34,7 +34,7 @@ const SelectModeAndTokenSwapPage = () => {
     let isValid = true;
 
     if (!swapMode) {
-      errors.mode = 'Please select a swap mode.';
+      errors.mode = 'Bắt bưộc chọn chế độ trao đổi.';
       isValid = false;
     }
 
@@ -58,13 +58,13 @@ const SelectModeAndTokenSwapPage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Swap - Step 2: Select Mode & Token</h1>
+      <h1>Trao đổi - Bước 2: Chọn chế độ trao đổi & Token</h1>
       <p className={styles.summaryText}>
-        Selected Chain: <strong>{displayChainName}</strong>
+        Mạng: <strong>{displayChainName}</strong>
       </p>
 
       <form onSubmit={handleSubmit} className={styles.formSection}>
-        <h2>1. Choose Swap Direction</h2>
+        <h2>1. Chọn chế độ trao đổi</h2>
         <div className={styles.radioGroup}>
           <label className={styles.radioLabel}>
             <input
@@ -73,7 +73,7 @@ const SelectModeAndTokenSwapPage = () => {
               checked={swapMode === 'token_to_native'}
               onChange={() => setSwapMode('token_to_native')}
             />
-            Token to Native (e.g., USDT to ETH)
+            Token sang Native (e.g., USDT sang ETH)
           </label>
           <label className={styles.radioLabel}>
             <input
@@ -82,7 +82,7 @@ const SelectModeAndTokenSwapPage = () => {
               checked={swapMode === 'native_to_token'}
               onChange={() => setSwapMode('native_to_token')}
             />
-            Native to Token (e.g., ETH to USDT)
+            Native sang Token (e.g., ETH sang USDT)
           </label>
         </div>
         {formErrors.mode && <p className={styles.errorMessage}>{formErrors.mode}</p>}
@@ -90,14 +90,14 @@ const SelectModeAndTokenSwapPage = () => {
         {/* Display token selection component only if a swapMode is chosen */}
         {swapMode && (
           <>
-            <h2 className={styles.subHeading}>2. Select Token to {swapMode === 'token_to_native' ? 'Swap From' : 'Swap To'}</h2>
+            <h2 className={styles.subHeading}>2. Chọn token để {swapMode === 'token_to_native' ? 'trao đổi sang native' : 'trao đổi native sang'}</h2>
             <div className={styles.formGroup}>
               <TokenSelect
                 label={swapMode === 'token_to_native' ? "Token to swap FROM" : "Token to swap TO"}
                 chainId={chainId}
                 value={selectedTokenAddress}
                 onChange={setSelectedTokenAddress}
-                placeholder="Search and select a token..."
+                placeholder="Chọn token..."
                 formErrors={formErrors.token}
               />
               {/* {formErrors.token && <p className={styles.errorMessage}>{formErrors.token}</p>} */}
@@ -111,10 +111,10 @@ const SelectModeAndTokenSwapPage = () => {
             onClick={() => navigate(`/finance/swap`)}
             className={styles.prevButton}
           >
-            Previous
+            Quay lại
           </button>
           <button type="submit" className={styles.nextButton}>
-            Next Step
+            Tiếp tục
           </button>
         </div>
       </form>

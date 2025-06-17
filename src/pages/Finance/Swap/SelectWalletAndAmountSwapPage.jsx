@@ -29,7 +29,7 @@ const SelectWalletAndAmountSwapPage = () => {
             const data = await tokenApi.getTokensByAddress(address, {});
             setTokenName(data?.tokens[0]?.token_name || '');
         } catch (err) {
-            setTokenName('Failed to load token name.');
+            setTokenName('Có lỗi khi tải thông tin token.');
         } finally {
             setIsLoading(false);
         }
@@ -84,17 +84,17 @@ const SelectWalletAndAmountSwapPage = () => {
         let isValid = true;
 
         if (swapPairs.length === 0) {
-            errors.noSwapPair = 'Please add at least one wallet and amount to swap.';
+            errors.noSwapPair = 'Tối thiểu cần một cặp ví và số lượng trao đổi.';
             isValid = false;
         } else {
             swapPairs.forEach((pair, index) => {
                 if (!pair.wallet) {
-                errors[`wallet-${index}`] = `Wallet ${index + 1} cannot be empty.`;
+                errors[`wallet-${index}`] = `Ví ${index + 1} không thể rỗng.`;
                 isValid = false;
                 }
                 const parsedAmount = parseFloat(pair.amount);
                 if (!pair.amount || isNaN(parsedAmount) || parsedAmount <= 0) {
-                errors[`amount-${index}`] = `Amount ${index + 1} must be a positive number.`;
+                errors[`amount-${index}`] = `Số lượng ${index + 1} phải là số.`;
                 isValid = false;
                 }
             });
@@ -130,7 +130,7 @@ const SelectWalletAndAmountSwapPage = () => {
                     chainId
                     
                 });
-                alert('Token to Native swap initiated successfully!');
+                // alert('Token to Native swap initiated successfully!');
 
             } else if (mode === 'native_to_token') {
                 // Nếu là Native to Token, không cần bước approve
@@ -157,7 +157,7 @@ const SelectWalletAndAmountSwapPage = () => {
         }
     };
 
-    const displayMode = mode === 'token_to_native' ? 'Token to Native' : 'Native to Token';
+    const displayMode = mode === 'token_to_native' ? 'Token sang Native' : 'Native sang Token';
     const displayTokenName = tokenAddress === 'NATIVE_TOKEN'
         ? 'Native Token'
         : (tokenAddress ? `${tokenName} (${tokenAddress.substring(0, 6)}...${tokenAddress.substring(tokenAddress.length - 4)})` : 'N/A');
@@ -171,17 +171,17 @@ const SelectWalletAndAmountSwapPage = () => {
                 </div>
             )}
 
-            <h1>Swap - Step 3: Configure Wallets & Amounts</h1>
+            <h1>Trao Đổi - Bước 3: Cấu hình ví và số lượng</h1>
             <p className={styles.summaryText}>
-                Chain: <strong>{getChainNameById(chainId).toUpperCase()}</strong> | Mode: <strong>{displayMode}</strong> | Token: <strong>{displayTokenName}</strong>
+                Mạng: <strong>{getChainNameById(chainId).toUpperCase()}</strong> | Chế độ: <strong>{displayMode}</strong> | Token: <strong>{displayTokenName}</strong>
             </p>
 
             <form onSubmit={handleSubmit} className={styles.formSection}>
-                <h2 className={styles.subHeading}>1. Configure Swap Details</h2>
+                <h2 className={styles.subHeading}>1. Cấu hình ví</h2>
                 {formErrors.noSwapPair && <p className={styles.errorMessage}>{formErrors.noSwapPair}</p>}
                 <div className={styles.formGroup}>
                     <label htmlFor="transfer-amount" className={styles.label}>
-                        Min Amount Out:
+                        Số lượng tối thiểu nhận được:
                     </label>
                     <input
                         type="text" // Sử dụng type="number" cho input số
@@ -193,7 +193,7 @@ const SelectWalletAndAmountSwapPage = () => {
                     />
                     {formErrors.amount && <p className={styles.errorMessage}>{formErrors.amount}</p>}
                 </div>
-                <h2 className={styles.subHeading}>2. Configure Swap Details</h2>
+                <h2 className={styles.subHeading}>2. Cấu hình ví</h2>
                 {swapPairs.map((pair, index) => (
                 <WalletAmountInput
                     key={index} // Key duy nhất cho mỗi khối
@@ -204,8 +204,8 @@ const SelectWalletAndAmountSwapPage = () => {
                     onAmountChange={updateAmount}
                     // Chỉ hiển thị nút xóa nếu có nhiều hơn một cặp
                     onRemove={swapPairs.length > 1 ? removeSwapPair : null}
-                    walletPlaceholder="Select wallet"
-                    amountPlaceholder="Enter amount to swap"
+                    walletPlaceholder="Chọn ví để trao đổi"
+                    amountPlaceholder="Nhập só lượng trao đổi"
                     walletErrors={formErrors[`wallet-${index}`]}
                     amountErrors={formErrors[`amount-${index}`]}
                     isDisabled={isLoading} // Vô hiệu hóa input khi đang tải
@@ -213,13 +213,13 @@ const SelectWalletAndAmountSwapPage = () => {
                 ))}
 
                 <button type="button" className={styles.addButton} onClick={addSwapPair} disabled={isLoading}>
-                + Add New Wallet & Amount
+                + Thêm lựa chọn ví và số lượng
                 </button>
 
                 {transactionError && (
                 <div className={styles.globalErrorMessage}>
-                    <p>Error: {transactionError}</p>
-                    <p>Please check your inputs and try again.</p>
+                    <p>Lỗi: {transactionError}</p>
+                    <p>Có lỗi trong quá trình trao đổi.</p>
                 </div>
                 )}
 
@@ -231,10 +231,10 @@ const SelectWalletAndAmountSwapPage = () => {
                     className={styles.prevButton}
                     disabled={isLoading}
                 >
-                    Previous
+                    Quay lại
                 </button>
                 <button type="submit" className={styles.nextButton} disabled={isLoading}>
-                    {isLoading ? 'Processing Swap...' : 'Complete Swap'}
+                    {isLoading ? 'Đang xử lý...' : 'Hoàn thành trao đổi'}
                 </button>
                 </div>
             </form>

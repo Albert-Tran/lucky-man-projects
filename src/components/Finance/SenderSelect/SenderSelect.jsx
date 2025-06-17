@@ -7,7 +7,7 @@ const SenderSelect = ({ value, onChange, onRemove, placeholder, index, formError
   return (
     <div className={`${styles.formGroup} ${styles.dynamicInputGroup}`}>
       <label htmlFor={`sender-wallet-${index}`} className={styles.label}>
-        Sender Wallet {index + 1}:
+        Ví chuyển {index + 1}:
       </label>
       <div className={styles.selectWithRemoveButton}>
         <WalletSelect

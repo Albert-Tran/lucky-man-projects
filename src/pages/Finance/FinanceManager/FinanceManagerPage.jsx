@@ -16,13 +16,13 @@ const FinanceManagerPage = () => {
 
       <div className={styles.buttonGrid}>
         <button className={styles.actionButton} onClick={() => handleNavigate('/finance/swap')}>
-          Swap
+          Trao đổi
         </button>
         <button className={styles.actionButton} onClick={() => handleNavigate('/finance/transfer')}>
-          Transfer
+          Chuyển khoản
         </button>
         <button className={styles.actionButton} onClick={() => handleNavigate('/finance/success')}>
-          Random Swap
+          Trao đổi ngẫu nhiên
         </button>
       </div>
     </div>

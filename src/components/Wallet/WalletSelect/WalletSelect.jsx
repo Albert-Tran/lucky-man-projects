@@ -16,7 +16,7 @@ const ITEMS_PER_PAGE = CONFIG[import.meta.env.VITE_MODE].ITEMS_PER_PAGE_IN_SELEC
 const WalletSelect = ({
   value,   // Giá trị ví hiện tại được chọn (e.g., wallet address)
   onChange, // Callback khi giá trị thay đổi (e.g., (newWalletAddress) => {})
-  placeholder = 'Select a wallet',
+  placeholder = 'Chọn ví',
   label = '',
   isDisabled = false,
   formErrors,
@@ -154,11 +154,11 @@ const WalletSelect = ({
         <div className={styles.optionsDropdown}>
           <div className={styles.optionsList}>
             {isLoading && options.length === 0 ? (
-              <div className={styles.message}>Loading wallets...</div>
+              <div className={styles.message}>Đang tải...</div>
             ) : error ? (
               <div className={styles.errorMessage}>{error}</div>
             ) : options.length === 0 ? (
-              <div className={styles.message}>No wallets available.</div>
+              <div className={styles.message}>Không có ví khả dụng.</div>
             ) : (
               options.map((option, index) => (
                 <div
@@ -177,12 +177,12 @@ const WalletSelect = ({
                 onClick={handleLoadMore}
                 disabled={isLoading}
               >
-                {isLoading ? 'Loading...' : 'Load More Wallets'}
+                {isLoading ? 'Đang tải...' : 'Tải thêm'}
               </button>
             )}
 
             {!isLoading && !hasMore && options.length > 0 && (
-              <div className={styles.message}>All wallets loaded.</div>
+              <div className={styles.message}>Tất cả các ví đã được tải.</div>
             )}
           </div>
         </div>

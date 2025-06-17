@@ -6,7 +6,7 @@ const ReceiverInput = ({ value, onChange, onRemove, placeholder, index, formErro
   return (
     <div className={`${styles.formGroup} ${styles.dynamicInputGroup}`}>
       <label htmlFor={`receiver-address-${index}`} className={styles.label}>
-        Receiver Address {index + 1}:
+        Ví nhận {index + 1}:
       </label>
       <div className={styles.inputWithRemoveButton}>
         <input

@@ -31,7 +31,7 @@ const SelectTokenTransferPage = () => {
 
     if (tokenType === 'custom_token') {
       if (!selectedTokenAddress) {
-        errors.token = 'Please select a token.';
+        errors.token = 'Bắt buộc chọn token.';
         isValid = false;
       }
     }
@@ -52,13 +52,13 @@ const SelectTokenTransferPage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Wallet Transfer - Step 2: Select Token</h1>
+      <h1>Chuyển Khoản - Bước 2: Chọn Token</h1>
       <p className={styles.summaryText}>
-        Selected Chain: <strong>{getChainNameById(chainId).toUpperCase()}</strong>
+        Mạng Đã Chọn: <strong>{getChainNameById(chainId).toUpperCase()}</strong>
       </p>
 
       <form onSubmit={handleSubmit} className={styles.formSection}>
-        <h2>Choose Token Type</h2>
+        <h2>Chọn Loại Token</h2>
         <div className={styles.radioGroup}>
           <label className={styles.radioLabel}>
             <input
@@ -84,7 +84,7 @@ const SelectTokenTransferPage = () => {
                 setFormErrors({}); // Xóa lỗi
               }}
             />
-            Custom Token (ERC-20, etc.)
+            Token Khác (ERC-20, etc.)
           </label>
         </div>
 
@@ -92,11 +92,11 @@ const SelectTokenTransferPage = () => {
         {tokenType === 'custom_token' && (
           <div className={styles.formGroup}>
             <TokenSelect
-              label="Select Custom Token"
+              label="Chọn token"
               chainId={chainId}
               value={selectedTokenAddress}
               onChange={setSelectedTokenAddress}
-              placeholder="Search and select a token..."
+              placeholder="Chọn token..."
               formErrors={formErrors.token}
             />
             {/* {formErrors.token && <p className={styles.errorMessage}>{formErrors.token}</p>} */}
@@ -109,10 +109,10 @@ const SelectTokenTransferPage = () => {
             onClick={() => navigate('/finance/transfer')}
             className={styles.prevButton}
           >
-            Previous
+            Quay lại
           </button>
           <button type="submit" className={styles.nextButton}>
-            Next Step
+            Tiếp tục
           </button>
         </div>
       </form>

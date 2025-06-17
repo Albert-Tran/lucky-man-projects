@@ -22,7 +22,7 @@ const TransferPage = () => {
 
   const handleNext = () => {
     if (!selectedChain) {
-      setFormError('Please select a blockchain.');
+      setFormError('Bắt buộc chọn mạng.');
       return;
     }
     setFormError(null);
@@ -31,10 +31,10 @@ const TransferPage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Wallet Transfer - Step 1: Select Blockchain</h1>
+      <h1>Chuyển Khoản - Bước 1: Chọn Mạng</h1>
 
       <div className={styles.formSection}>
-        <h2>Select Blockchain</h2>
+        <h2>Chọn Mạng</h2>
         <div className={styles.formGroup}>
           <CustomSelect
             id="chainSelect"
@@ -48,13 +48,13 @@ const TransferPage = () => {
         </div>
         <div className={styles.navigationButtons}>
           <button onClick={handleBack} className={styles.prevButton}>
-            Previous
+            Quay lại
           </button>
           <button
             onClick={handleNext}
             className={styles.nextButton}
           >
-            Next
+            Tiếp tục
           </button>
         </div>
       </div>

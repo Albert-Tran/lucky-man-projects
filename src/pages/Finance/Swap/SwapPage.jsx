@@ -7,7 +7,7 @@ import CONFIG from '../../../utils/config/config.js';
 
 const SUPPORTED_CHAINS = CONFIG[import.meta.env.VITE_MODE].SUPPORTED_CHAINS;
 const SELECTED_CHAINS = [
-  { value: '', label: 'Chọn chain' },
+  { value: '', label: 'Chọn mạng' },
   ...SUPPORTED_CHAINS
 ];
 
@@ -22,7 +22,7 @@ const SwapPage = () => {
 
   const handleNext = () => {
     if (!selectedChain) {
-      setFormError('Please select a blockchain.');
+      setFormError('Bắt buộc chọn mạng.');
       return;
     }
     setFormError(null);
@@ -31,30 +31,30 @@ const SwapPage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <h1>Wallet Swap - Step 1: Select Blockchain</h1>
+      <h1>Trao đổi - Bước 1: Chọn mạng</h1>
 
       <div className={styles.formSection}>
-        <h2>Select Blockchain</h2>
+        <h2>Chọn mạng</h2>
         <div className={styles.formGroup}>
           <CustomSelect
             id="chainSelect"
             options={SELECTED_CHAINS}
             value={selectedChain}
             onChange={setSelectedChain}
-            placeholder="Select Chain"
+            placeholder="Chọn mạng"
             formErrors={formError}
           />
           {formError && <p className={styles.errorMessage}>{formError}</p>}
         </div>
         <div className={styles.navigationButtons}>
           <button onClick={handleBack} className={styles.prevButton}>
-            Previous
+            Quay lại
           </button>
           <button
             onClick={handleNext}
             className={styles.nextButton}
           >
-            Next
+            Tiếp tục
           </button>
         </div>
       </div>

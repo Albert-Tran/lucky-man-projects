@@ -153,7 +153,7 @@ const TokenSelect = ({
             ) : error ? (
               <div className={styles.errorMessage}>{error}</div>
             ) : options.length === 0 ? (
-              <div className={styles.message}>No options available.</div>
+              <div className={styles.message}>Không có token nào khả dụng.</div>
             ) : (
               options.map((option, index) => (
                 <div
@@ -173,12 +173,12 @@ const TokenSelect = ({
                 onClick={handleLoadMore}
                 disabled={isLoading}
               >
-                {isLoading ? 'Loading...' : 'Load More'}
+                {isLoading ? 'Đang tải...' : 'Tải thêm'}
               </button>
             )}
             
             {!isLoading && !hasMore && options.length > 0 && (
-              <div className={styles.message}>All options loaded.</div>
+              <div className={styles.message}>Đã tải hết các token.</div>
             )}
           </div>
         </div>
